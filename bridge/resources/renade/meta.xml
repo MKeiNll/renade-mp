@@ -1,0 +1,4 @@
+<meta>
+    <info name="Renade" description="RenadeMP" />
+    <script src="bin/Debug/netcoreapp2.0/renade.dll" />
+</meta>
