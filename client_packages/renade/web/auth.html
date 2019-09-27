@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+	
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/jquery-3.4.1.js"></script>
+	<script src="js/auth.js"></script>
+    <title>RENADE</title>
+</head>
+<body>
+	<!-- COMMENT THIS OUT IN PRODUCTION -->
+	<div id="debug"></div> 
+	<!-- COMMENT THIS OUT IN PRODUCTION -->
+	
+	<div class="switch-pages">
+
+
+
+		<main class="login-page">
+			<div>
+				
+				<header>
+				</header>
+
+				<div class="login-menu">
+					<div class="title">Авторизация</div>
+					<!-- <div class="description">Вспомогательный текст</div> -->
+					<form>
+						<input id="loginLoginInput" class="inputs" type="text" placeholder="Логин / E-mail" required>
+						<input id="passwordLoginInput" class="inputs" type="password" placeholder="Пароль" required><br>
+						<input class="remember" id="remember" type="checkbox" checked>
+							<label for="remember">Запомнить</label>
+						<button class="button js-reg" type="button">Регистрация</button>
+						<input class="inputs button js-login" type="submit" value="Войти" 
+							onclick="handleLogin()"><br>
+						<a class="forgot" type="button" href="#">Забыл пароль?</a>
+					</form>
+				</div>
+
+				<footer>
+					<div class="status">Статус: <span class="server"></span><span class="players"></span></div>
+				</footer>
+
+			</div>
+		</main>
+
+
+		<main class="reg-page hide">
+			<div>
+
+				<header>
+				</header>
+
+				<div class="login-menu">
+					<div class="title">Регистрация</div>
+					<!-- <div class="description">Вспомогательный текст</div> -->
+					<form>
+						<input id="loginRegInput" class="inputs" type="text" placeholder="Логин" required>
+						<input id="emailRegInput" class="inputs" type="email" placeholder="Почта" required>
+						<input id="password1RegInput" class="inputs" type="password" placeholder="Пароль" required>
+						<input id="password2RegInput" class="inputs" type="password" placeholder="Повтори пароль" required>
+						<br>
+						<input class="inputs button js-end-reg" type="button" value="Зарегестрироваться" 
+							onclick="mp.trigger('registerPlayer', $('#loginRegInput').val(), $('#emailRegInput').val(), $('#password1RegInput').val(), $('#password2RegInput').val());">
+					</form>
+				</div>
+
+				<footer>
+					<div class="status">Статус: <span class="server"></span><span class="players"></span></div>
+					<div class="back"><button class="button js-back-reg" type="button">Назад</button></div>
+				</footer>
+
+			</div>
+		</main>
+
+
+		<main class="slots-page hide">
+			<div>
+				
+				<header>
+					<div class="account"><span class="nickname playerLogin"></span>, <a class="js-logout" href="">Выйти</a></div>
+				</header>
+
+				<div class="login-menu">
+					<div class="title">Выбор персонажа</div>
+					<div class="slots slot_1">
+						<a class="js-slots" href="#">
+						<div>Слот #1</div>
+						<div id="firstCharacter" class="nickname"></div>
+						<div class="avatar"></div>
+						</a>
+						<button class="button">Удалить</button>
+					</div>
+					<div class="slots slot_2">
+						<a class="js-slots" href="#">
+						<div>Слот #2</div>
+						<div class="nickname"></div>
+						<div class="avatar"></div></a>
+						<button class="button">Создать</button>
+					</div>
+					<div class="slots slot_3">
+						<a class="js-slots" href="#"><div>Слот #3</div>
+						<div class="nickname"></div>
+						<div class="avatar"></div></a>
+						<button class="button">Открыть</button>
+					</div>
+				</div>
+
+				<footer>
+					<div class="status">Статус: <span class="server"></span><span class="players"></span></div>
+					<div class="back"><button class="button js-back-slots" href="">Назад</button></div>
+				</footer>
+
+			</div>
+		</main>
+
+
+		<main class="spawn-page hide">
+			<div>
+
+				<header>
+					<div class="account"><span class="nickname playerLogin"></span>, <a class="js-logout" href="">Выйти</a>
+						<br><span id="selectedCharacter" class="char-name">Character Name</span></div>
+				</header>
+
+				<div class="login-menu">
+					<div class="title">Выбор спауна</div>
+					<div class="spawn spawn_1" onclick="mp.trigger('spawnPlayer');">
+						<a href="#"><div class="js-spawn">Последний выход</div>
+						<div class="location-name">Палито Бэй</div>
+						<div class="location-img"></div></a>
+					</div>
+					<div class="spawn spawn_2">
+						<a href="#"><div class="js-spawn">Дом</div>
+						<div class="location-name">Вайнвуд Хилз</div>
+						<div class="location-img"></div></a>
+					</div>
+					<div class="spawn spawn_3">
+						<a href="#"><div class="js-spawn">Фракция</div>
+						<div class="location-name">Форт Занкудо</div>
+						<div class="location-img"></div></a>
+					</div>
+				</div>
+
+				<footer>
+					<div class="status">Статус: <span class="server"></span><span class="players"></span></div>
+					<div class="back"><button class="button js-back-spawn" href="">Назад</button></div>
+				</footer>
+
+			</div>
+		</main>
+
+
+		<main class="offline-page hide">
+			<div>
+				<header>
+					<div class="title">Сервер Offline</div>
+				</header>
+				<div>Проводятся технгические работы</div>
+				<footer>
+					<div class="status">Статус: <span class="server"></span><span class="players"></span></div>
+					<div class="back"><button class="button js-back-offline" href="">Назад</button></div>
+				</footer>
+			</div>
+		</main>
+
+
+	</div>
+</body>
+</html>
