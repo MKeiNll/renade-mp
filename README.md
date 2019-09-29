@@ -1,2 +1,2 @@
-# renade
+# renade-mp
 RenadeMP
