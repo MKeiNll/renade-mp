@@ -251,7 +251,7 @@ namespace renade
                 player.TriggerEvent("spawnPlayerSuccess");
                 LogAuthorization(socialClubName);
                 Character character = CharacterRepo.GetCharactersByPlayerSocialClubNameSql(socialClubName)[0];
-                player.Position = new Vector3(character.Pos_X, character.Pos_Y, character.Pos_Z);
+                player.Position = new Vector3(character.PosX, character.PosY, character.PosZ);
             }
             catch (Exception e)
             {
