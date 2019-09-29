@@ -114,7 +114,6 @@ namespace renade
                 UnauthorizedPlayers.Add(socialClubName);
 
                 player.Dimension = UnauthorizedDimension;
-                player.SendChatMessage("Hello once again, CL/CD");
 
                 // TODO - handle max online limit
                 if (OnlinePlayers.Any(p => p.SocialClubName == socialClubName))

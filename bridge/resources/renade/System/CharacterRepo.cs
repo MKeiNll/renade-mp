@@ -98,10 +98,6 @@ namespace renade
                             int passId = 0;
                             int id = reader.GetInt32(0);
 
-                            float pos_x = reader.GetFloat(10);
-                            float pos_y = reader.GetFloat(11);
-                            float pos_z = reader.GetFloat(12);
-
                             if (!reader.IsDBNull(4))
                                 passType = PassType.Developer;
                             else if (!reader.IsDBNull(5))
@@ -129,7 +125,7 @@ namespace renade
                             }
 
                             characters.Add(new Character(socialClubName, reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), passId, passType,
-                                (Gender)reader.GetInt16(8), reader.GetInt64(9), pos_x, pos_y, pos_z));
+                                (Gender)reader.GetInt16(8), reader.GetInt64(9), reader.GetFloat(10), reader.GetFloat(11), reader.GetFloat(12)));
                         }
                         return characters;
                     }
