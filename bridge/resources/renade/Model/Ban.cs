@@ -6,8 +6,8 @@ namespace renade
     public enum BanType { SocialClubName, Hwid };
     public enum BanCategory
     {
-        None, HackCheat, BugUse, SteamOverlay, SpawnKill, DriveByKill,
-        DeathMatch, TeamKill, RevengeKill, Powergaming, Metagaming, Afk, Custom
+        None, HackCheat, BugUse, SteamOverlay, SpawnKill, DriveByKill, DeathMatch, 
+        TeamKill, RevengeKill, Powergaming, Metagaming, Afk, CharacterKill, Custom
     }
 
     public class Ban
