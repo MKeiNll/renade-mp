@@ -176,32 +176,32 @@ mp.events.add('editorList', (param, value) => {
 });
 
 mp.events.add('characterSave', () => {
-	if(new Date().getTime() - global.lastCheck < 1000) return; 
-	global.lastCheck = new Date().getTime();
-	if(editorBrowser != null) {
-		editorBrowser.destroy();
-		editorBrowser = null;
-		mp.game.graphics.startScreenEffect("MinigameTransitionIn", 0, false);
-		let currentGender = (gender) ? 0 : 1;
+    if (new Date().getTime() - global.lastCheck < 1000) return;
+    global.lastCheck = new Date().getTime();
+    if (editorBrowser != null) {
+        editorBrowser.destroy();
+        editorBrowser = null;
+        mp.game.graphics.startScreenEffect("MinigameTransitionIn", 0, false);
+        let currentGender = (gender) ? 0 : 1;
 
-		var appearance_values = [];
-		for (var i = 0; i < 11; i++) appearance_values.push({ Value: appearance[i], Opacity: 100 });
+        var appearance_values = [];
+        for (var i = 0; i < 11; i++) appearance_values.push({ Value: appearance[i], Opacity: 100 });
 
-		var hair_or_colors = [];
-		hair_or_colors.push(hairIDList[currentGender][hair]);
-		hair_or_colors.push(hairColor);
-		hair_or_colors.push(0);
-		hair_or_colors.push(hairColor);
-		hair_or_colors.push(hairColor);
-		hair_or_colors.push(eyeColor);
-		hair_or_colors.push(0);
-		hair_or_colors.push(0);
-		hair_or_colors.push(hairColor);
+        var hair_or_colors = [];
+        hair_or_colors.push(hairIDList[currentGender][hair]);
+        hair_or_colors.push(hairColor);
+        hair_or_colors.push(0);
+        hair_or_colors.push(hairColor);
+        hair_or_colors.push(hairColor);
+        hair_or_colors.push(eyeColor);
+        hair_or_colors.push(0);
+        hair_or_colors.push(0);
+        hair_or_colors.push(hairColor);
 
-		setTimeout(function () {
-			mp.events.callRemote("SaveCharacter", currentGender, father, mother, similarity, skin, JSON.stringify(features), JSON.stringify(appearance_values), JSON.stringify(hair_or_colors));
-		}, 5000);
-	}
+        setTimeout(function () {
+            mp.events.callRemote("SaveCharacter", currentGender, father, mother, similarity, skin, JSON.stringify(features), JSON.stringify(appearance_values), JSON.stringify(hair_or_colors));
+        }, 5000);
+    }
 });
 
 var editorBrowser = null;
@@ -226,7 +226,7 @@ mp.events.add('CreatorCamera', () => {
 
     localplayer.taskPlayAnim("amb@world_human_guard_patrol@male@base", "base", 8.0, 1, -1, 1, 0.0, false, false, false);
 
-    if(editorBrowser == null) editorBrowser = mp.browsers.new('package://cef/character.html');
+    if (editorBrowser == null) editorBrowser = mp.browsers.new('package://cef/character.html');
 
     global.menuOpen();
     mp.events.call('camMenu', true);
@@ -241,10 +241,10 @@ mp.events.add('DestroyCamera', () => {
     global.menuClose();
     bodyCam = null;
 
-	if(editorBrowser != null) {
-		editorBrowser.destroy();
-		editorBrowser = null;
-	}
+    if (editorBrowser != null) {
+        editorBrowser.destroy();
+        editorBrowser = null;
+    }
 
     localplayer.stopAnim("amb@world_human_guard_patrol@male@base", "base", 0.0)
     localplayer.freezePosition(false);
@@ -253,8 +253,7 @@ mp.events.add('DestroyCamera', () => {
     mp.events.call('showHUD', true);
     mp.events.call('showAltTabHint');
 
-    if (global.menu == null)
-    {
+    if (global.menu == null) {
         global.loggedin = true;
         global.menu = mp.browsers["new"]('package://cef/menu.html');
         global.helpmenu = mp.browsers["new"]('package://cef/help.html');
