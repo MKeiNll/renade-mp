@@ -233,6 +233,20 @@ namespace renade
             }
         }
 
+        [RemoteEvent("CreateCharacter")]
+        public void CreateCharacter(Client player, Gender gender, Mother mother, Father father)
+        {
+            try
+            {
+                // TODO - add all parameters & print them
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                // TODO - do something client-side
+            }
+        }
+
         [RemoteEvent("SpawnPlayer")]
         public void SpawnPlayer(Client player)
         {
