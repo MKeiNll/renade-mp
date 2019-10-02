@@ -1,8 +1,12 @@
 ﻿body {
     font-family: 'Ubuntu', sans-serif;
-	user-select: none;
-	-moz-user-select: none;
-	-webkit-user-select: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    background: #012C40;
+    height: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .editor {
@@ -18,44 +22,44 @@
 }
 
 .editor h1 {
-	background: #E74856;
-	box-shadow: 0 0 15px #E74856;
-	color: white;
-	padding: 8px;
-	margin: 10px;
-	font-size: 10pt;
-	text-align: center;
-	font-weight: 300;
+    background: #E74856;
+    box-shadow: 0 0 15px #E74856;
+    color: white;
+    padding: 8px;
+    margin: 10px;
+    font-size: 10pt;
+    text-align: center;
+    font-weight: 300;
 }
 
 .editor h3 {
-	margin: 8px;
-	font-size: 18pt;
-	font-weight: 300;
-	color: white;
+    margin: 8px;
+    font-size: 18pt;
+    font-weight: 300;
+    color: white;
 }
 
 .editor .button {
-	background: #E74856;
-	box-shadow: 0 0 15px #E74856;
-	color: white;
-	padding: 8px;
-	margin: 10px;
-	font-size: 10pt;
-	text-align: center;
-	font-weight: 300;
-	cursor: pointer;
+    background: #E74856;
+    box-shadow: 0 0 15px #E74856;
+    color: white;
+    padding: 8px;
+    margin: 10px;
+    font-size: 10pt;
+    text-align: center;
+    font-weight: 300;
+    cursor: pointer;
 }
 
 .editor .button:hover {
-	background: #FF4343;
+    background: #FF4343;
 }
 
 .editor .slider {
-	margin-left: 5%;
-	margin-right: 5%;
-	margin-top: 10px;
-	margin-bottom: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .element {
@@ -63,11 +67,11 @@
     color: white;
 }
 
-.switch{
+.switch {
     display: block;
 }
 
-.switch .btn{
+.switch .btn {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 10px;
@@ -75,7 +79,7 @@
     background-color: rgb(55, 55, 55);
 }
 
-.switch .on{
+.switch .on {
     background-color: #E74856;
 }
 
@@ -85,52 +89,60 @@
 }
 
 .list div {
-	padding: 8px;
-	width: 57%;
-	text-align: center;
-	background-color: #E74856;
-	border-radius: 5px;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	color: white;
-	display: inline-block;
+    padding: 8px;
+    width: 57%;
+    text-align: center;
+    background-color: #E74856;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: white;
+    display: inline-block;
 }
 
 .list .left {
-	background-color: #E74856;
-	color: white;
-	padding: 8px;
-	border-radius: 5px;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	display: inline-block;
+    background-color: #E74856;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    display: inline-block;
 }
 
 .list .right {
-	background-color: #E74856;
-	color: white;
-	padding: 8px;
-	border-radius: 5px;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	display: inline-block;
+    background-color: #E74856;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    display: inline-block;
 }
 
-.list input:hover, .list .right:hover, .list .left:hover {
-	background-color: #FF4343;
-	cursor: pointer;
+.list input:hover,
+.list .right:hover,
+.list .left:hover {
+    background-color: #FF4343;
+    cursor: pointer;
 }
 
-.list input:active, .list .right:active, .list .left:active {
-	background-color: #E74856;
-	cursor: pointer;
+.list input:active,
+.list .right:active,
+.list .left:active {
+    background-color: #E74856;
+    cursor: pointer;
 }
-	
+
 ::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #555;
+    background: #555;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ddd; 
+    background: #ddd;
+}
+
+a {
+    text-decoration: none;
 }
