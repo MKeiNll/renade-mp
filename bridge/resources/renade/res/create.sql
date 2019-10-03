@@ -5,7 +5,7 @@ use renade;
 -- TABLE DEFINITIONS
 
 CREATE TABLE player (
-	social_club_name VARCHAR(16) NOT NULL UNIQUE,
+	social_club_name VARCHAR(16) PRIMARY KEY,
     login VARCHAR(16) NOT NULL UNIQUE,
     mail VARCHAR(48) NOT NULL UNIQUE,
 	reg_date BIGINT NOT NULL,
@@ -17,24 +17,19 @@ CREATE TABLE player (
 	last_ip_change BIGINT
 );
 
-CREATE TABLE ban (
-	social_club_name VARCHAR(16) NOT NULL UNIQUE,
+CREATE TABLE player_ban (
+	player_social_club_name VARCHAR(16) PRIMARY KEY,
 	hwid VARCHAR(128) NOT NULL UNIQUE,
 	reason VARCHAR(128) NOT NULL,
 	category TINYINT NOT NULL,
 	ban BIGINT NOT NULL
 );
 
-CREATE TABLE ingame_character (
-	player_social_club_name VARCHAR(16) NOT NULL,
+CREATE TABLE player_character (
+    player_social_club_name VARCHAR(16) NOT NULL,
     character_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(16) NOT NULL,
     family_name VARCHAR(16) NOT NULL,
-    dev_pass_id TINYINT UNIQUE,
-    admin_pass_id TINYINT UNIQUE,
-    media_pass_id SMALLINT UNIQUE,
-    regular_pass_id INT UNIQUE,
-    gender TINYINT NOT NULL,
     reg_date BIGINT NOT NULL,
     bank_id MEDIUMINT NOT NULL UNIQUE,
     character_level INT DEFAULT 0,
@@ -44,7 +39,7 @@ CREATE TABLE ingame_character (
     cash INT DEFAULT 1000,
     money INT DEFAULT 0,
     donate INT DEFAULT 0,
-    pos_x FLOAT DEFAULT -275.522,
+    pos_x FLOAT DEFAULT - 275.522,
     pos_y FLOAT DEFAULT 6635.835,
     pos_z FLOAT DEFAULT 7.425,
     fraction INT,
@@ -52,11 +47,16 @@ CREATE TABLE ingame_character (
     phone_number MEDIUMINT UNIQUE,
     job TINYINT,
     job_xp INT DEFAULT 0,
-    wanted TINYINT DEFAULT 0,
+    wanted TINYINT DEFAULT 0
+);
+
+CREATE TABLE character_appearance(
+	character_id INT NOT NULL PRIMARY KEY,
+    gender TINYINT NOT NULL,
     mother INT NOT NULL,
     father INT NOT NULL,
     similarity FLOAT NOT NULL,
-    skinColor INT NOT NULL,
+    skin_color INT NOT NULL,
 	nose_width FLOAT NOT NULL,
 	nose_height FLOAT NOT NULL,
 	nose_length FLOAT NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE ingame_character (
 	nose_tip FLOAT NOT NULL,
 	nose_bridge_shift FLOAT NOT NULL,
 	brow_height FLOAT NOT NULL,
-	brow width FLOAT NOT NULL,
+	brow_width FLOAT NOT NULL,
 	cheekbone_height FLOAT NOT NULL,
 	cheekbone_width FLOAT NOT NULL,
 	cheeks_width FLOAT NOT NULL,
@@ -84,7 +84,13 @@ CREATE TABLE ingame_character (
 	hair_color TINYINT NOT NULL
 );
 
-CREATE TABLE phone_contacts (
+CREATE TABLE character_pass(
+	character_id INT NOT NULL PRIMARY KEY,
+	pass_type TINYINT,
+    id INT
+);
+
+CREATE TABLE character_phone_contact (
     character_id INT NOT NULL,
     phone MEDIUMINT NOT NULL
 );
@@ -93,13 +99,25 @@ CREATE TABLE phone_contacts (
 	-- '$2a$11$BCHZTkvFq8y1SgoZWp9n/OmC4dIQZ7S2XndGfuYkwfpIFxljIadMe' is a hash of '123'
 
 INSERT INTO player (login, social_club_name, mail, pass, reg_date)
-VALUES ("123", "DeftEx", "levgirich@gmail.com", "$2a$11$BCHZTkvFq8y1SgoZWp9n/OmC4dIQZ7S2XndGfuYkwfpIFxljIadMe", 100000),
+VALUES 
+("123", "DeftEx", "levgirich@gmail.com", "$2a$11$BCHZTkvFq8y1SgoZWp9n/OmC4dIQZ7S2XndGfuYkwfpIFxljIadMe", 100000),
 ("player1", "test", "12345@gmail.com", "$2a$11$BCHZTkvFq8y1SgoZWp9n/OmC4dIQZ7S2XndGfuYkwfpIFxljIadMe", 100000);
-INSERT INTO ingame_character (player_social_club_name, first_name, family_name, dev_pass_id, gender, reg_date, bank_id, phone_number, mother, father, eyeColor, hair, hairColor, faceFeatures)
-VALUES ("DeftEx", "Gosha", "Gothic", 1, 0,  1566152872, 123456, 666666, 1, 2, 1, 1, 1, "abcd"),
-("DeftEx", "Darude", "Sandstorm", 2, 0,  1566152872, 654321, 100500, 1, 2, 1, 1, 1, "abcde");
 
-INSERT INTO phone_contacts (character_id, phone)
+INSERT INTO player_character (player_social_club_name, first_name, family_name, reg_date, bank_id, phone_number)
+VALUES 
+("DeftEx", "Gosha", "Gothic", 1566152872, 123456, 666666),
+("DeftEx", "Darude", "Sandstorm", 1566152872, 654321, 100500);
+
+INSERT INTO character_appearance (character_id, gender, mother, father, similarity, skin_color, nose_width, nose_height, nose_length, nose_bridge, nose_tip, nose_bridge_shift, brow_height, brow_width, cheekbone_height, cheekbone_width, cheeks_width, eyes, lips, jaw_width, jaw_height, chin_length, chin_position, chin_width, chin_shape, neck_width, hair, eyebrows, beard, eye_color, hair_color) 
+VALUES 
+(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+INSERT INTO character_pass (character_id, pass_type, id)
+VALUES 
+(0, 0, 1),
+(1, 0, 2);
+
+INSERT INTO character_phone_contact (character_id, phone)
 VALUES (0, 100500),
 (1, 666666);
 

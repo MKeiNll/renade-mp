@@ -44,28 +44,46 @@ namespace renade
         public readonly EyeColor EyeColor;
         public readonly HairColor HairColor;
 
-        public Appearance(string playerSocialClubName, int id, string firstName, string familyName, int level, int passId,
-            PassType passType, Gender gender, long regDate, float posX, float posY, float posZ)
+        public Appearance(Gender gender, Mother mother, Father father, float similarity, float skinColor, float noseHeight, float noseWidth, float noseLength,
+            float noseBridge, float noseTip, float noseBridgeTip, float browWidth, float browHeight, float cheekboneWidth, float cheekboneHeight,
+            float cheeksWidth, float eyes, float lips, float jawWidth, float jawHeight, float chinLength, float chinPosition, float chinWidth, float chinShape,
+            float neckWidth, Hair hair, Eyebrows eyebrows, Beard beard, EyeColor eyeColor, HairColor hairColor)
         {
-            PlayerSocialClubName = playerSocialClubName;
-            Id = id;
-            FirstName = firstName;
-            FamilyName = familyName;
-            Level = level;
-            PassId = passId;
-            PassType = passType;
             Gender = gender;
-            RegDate = regDate;
-            PosX = posX;
-            PosY = posY;
-            PosZ = posZ;
+            Mother = mother;
+            Father = father;
+            Similarity = similarity;
+            SkinColor = skinColor;
+            NoseHeight = noseHeight;
+            NoseWidth = noseWidth;
+            NoseLength = noseLength;
+            NoseBridge = noseBridge;
+            NoseTip = noseTip;
+            NoseBridgeTip = noseBridgeTip;
+            BrowWidth = browWidth;
+            BrowHeight = browHeight;
+            CheekboneWidth = cheekboneWidth;
+            CheekboneHeight = cheekboneHeight;
+            CheeksWidth = cheeksWidth;
+            Eyes = eyes;
+            Lips = lips;
+            JawWidth = jawWidth;
+            JawHeight = jawHeight;
+            ChinLength = chinLength;
+            ChinPosition = chinPosition;
+            ChinWidth = chinWidth;
+            ChinShape = chinShape;
+            NeckWidth = neckWidth;
+            Hair = hair;
+            Eyebrows = eyebrows;
+            Beard = beard;
+            EyeColor = eyeColor;
+            HairColor = hairColor;
         }
 
         public override string ToString()
         {
-            return String.Format("Character - Id: {0}; Player social club name: {1}; First Name: {2}; Family Name: {3}; Level: {4};" +
-                "Pass Id: {5}; Pass Type: {6}; Gender: {7}; Registration Date: {8}; X: {9}; Y: {10}; Z: {11}",
-                Id, PlayerSocialClubName, FirstName, FamilyName, Level, PassId, PassType, Gender, DateTimeOffset.FromUnixTimeMilliseconds(RegDate).ToLocalTime(), PosX, PosY, PosZ);
+            return String.Format("Gender: {0}; Father: {1}; Mother: {2}", Gender, Father, Mother);
         }
     }
 }
