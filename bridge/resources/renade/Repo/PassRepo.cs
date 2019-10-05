@@ -10,11 +10,6 @@ namespace renade
         public const int AdminPassMaxValue = 100;
         public const int MediaPassMaxValue = 1000;
 
-        public const int DeveloperPassOffset = 0;
-        public const int AdminPassOffset = 11;
-        public const int MediaPassOffset = 101;
-        public const int RegularPassOffset = 1001;
-
         private const string InsertPassSql = "INSERT INTO character_pass (character_id, pass_type, id) VALUES ({0}, {1}, {2});";
         private const string SelectPassByCharacterIdSql = "SELECT id, pass_type FROM character_pass WHERE character_id = {0};";
 

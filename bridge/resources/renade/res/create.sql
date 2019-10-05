@@ -25,7 +25,7 @@ CREATE TABLE player_ban (
 	ban BIGINT NOT NULL
 );
 
-CREATE TABLE player_character (
+CREATE TABLE player_character_primary_data (
     player_social_club_name VARCHAR(16) NOT NULL,
     character_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(16) NOT NULL,
@@ -104,7 +104,7 @@ VALUES
 ("123", "DeftEx", "levgirich@gmail.com", "$2a$11$BCHZTkvFq8y1SgoZWp9n/OmC4dIQZ7S2XndGfuYkwfpIFxljIadMe", 100000),
 ("player1", "test", "12345@gmail.com", "$2a$11$BCHZTkvFq8y1SgoZWp9n/OmC4dIQZ7S2XndGfuYkwfpIFxljIadMe", 100000);
 
-INSERT INTO player_character (player_social_club_name, first_name, family_name, reg_date, bank_id, phone_number)
+INSERT INTO player_character_primary_data (player_social_club_name, first_name, family_name, reg_date, bank_id, phone_number)
 VALUES 
 ("DeftEx", "Gosha", "Gothic", 1566152872, 123456, 666666),
 ("DeftEx", "Darude", "Sandstorm", 1566152872, 654321, 100500);
