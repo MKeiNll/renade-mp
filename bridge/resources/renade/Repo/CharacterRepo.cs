@@ -85,7 +85,7 @@ namespace renade
             }
         }
 
-        public List<Character> GetCharactersByPlayerSocialClubNameSql(string socialClubName)
+        public List<Character> GetCharactersByPlayerSocialClubName(string socialClubName)
         {
             List<Character> characters = new List<Character>();
             using (MySqlConnection connection = new MySqlConnection(ConnectionString))
@@ -253,7 +253,7 @@ namespace renade
             Log.Info("Free pass id: " + GetFreeCharacterPassId(PassType.Developer));
             Log.Info("Create: " + CreateNewCharacter("1234", "1234", "1234", PassType.Developer, Gender.Female, 1, 1, 1, 1, 1, "1234"));
             Log.Info("Get: ");
-            GetCharactersByPlayerSocialClubNameSql("1234").ForEach((e) => Log.Info(e));
+            GetCharactersByPlayerSocialClubName("1234").ForEach((e) => Log.Info(e));
             Log.Info("Free pass id: " + GetFreeCharacterPassId(PassType.Developer));
             Log.Info("Delete: " + DeleteCharacterById(3));
             Log.Info("Done.");

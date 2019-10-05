@@ -85,14 +85,15 @@ CREATE TABLE character_appearance(
 );
 
 CREATE TABLE character_pass(
-	character_id INT NOT NULL PRIMARY KEY,
+	character_id INT PRIMARY KEY,
 	pass_type TINYINT,
     id INT
 );
 
 CREATE TABLE character_phone_contact (
     character_id INT NOT NULL,
-    phone MEDIUMINT NOT NULL
+    phone_number MEDIUMINT NOT NULL,
+	UNIQUE(character_id, phone_number)
 );
 
 -- TABLE DATA
@@ -117,8 +118,9 @@ VALUES
 (0, 0, 1),
 (1, 0, 2);
 
-INSERT INTO character_phone_contact (character_id, phone)
-VALUES (0, 100500),
+INSERT INTO character_phone_contact (character_id, phone_number)
+VALUES 
+(0, 100500),
 (1, 666666);
 
 
