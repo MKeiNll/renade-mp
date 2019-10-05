@@ -9,11 +9,11 @@ namespace renade
         public const int MaxBanReasonLength = 128;
         public const int MaxHwidLength = 128;
         
-        private const string SelectBanBySocialClubNameSql = "SELECT ban, reason, category, hwid FROM ban WHERE social_club_name = '{0}';";
-        private const string SelectBanByHwidSql = "SELECT ban, reason, category, social_club_name FROM ban WHERE hwid = '{0}';";
-        private const string InsertBanSql = "INSERT INTO ban (social_club_name, hwid, reason, category, ban) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}');";
-        private const string SelectAllTemporaryBansSql = "SELECT social_club_name, hwid, reason, category, ban FROM ban WHERE ban > 0;";
-        private const string DeleteBanBySocialClubNameSql = "DELETE FROM ban WHERE social_club_name = '{0}';";
+        private const string SelectBanBySocialClubNameSql = "SELECT ban, reason, category, hwid FROM player_ban WHERE player_social_club_name = '{0}';";
+        private const string SelectBanByHwidSql = "SELECT ban, reason, category, player_social_club_name FROM player_ban WHERE hwid = '{0}';";
+        private const string InsertBanSql = "INSERT INTO player_ban (player_social_club_name, hwid, reason, category, ban) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}');";
+        private const string SelectAllTemporaryBansSql = "SELECT player_social_club_name, hwid, reason, category, ban FROM player_ban WHERE ban > 0;";
+        private const string DeleteBanBySocialClubNameSql = "DELETE FROM player_ban WHERE player_social_club_name = '{0}';";
 
         private static readonly NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
         private readonly string ConnectionString;

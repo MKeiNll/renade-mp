@@ -12,15 +12,15 @@ namespace renade
         public const int DuplicateKeyOnRandomValueMaxRetryCount = 10;
 
         private const string SelectCharacterByPlayerSocialClubNameSql = "SELECT character_id, first_name, family_name, character_level, dev_pass_id, " +
-            "admin_pass_id, media_pass_id, regular_pass_id, gender, reg_date, pos_x, pos_y, pos_z FROM ingame_character WHERE player_social_club_name = '{0}';";
-        private const string InsertCharacterSql = "INSERT INTO ingame_character (player_social_club_name, first_name, family_name, dev_pass_id, " +
+            "admin_pass_id, media_pass_id, regular_pass_id, gender, reg_date, pos_x, pos_y, pos_z FROM player_character WHERE player_social_club_name = '{0}';";
+        private const string InsertCharacterSql = "INSERT INTO player_character (player_social_club_name, first_name, family_name, dev_pass_id, " +
             "admin_pass_id, media_pass_id, regular_pass_id, gender, reg_date, bank_id, phone_number, mother, father, eyeColor, hair, hairColor, faceFeatures) " +
             "VALUES ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, '{16}');";
-        private const string SelectMaxDevPassIdSql = "SELECT MAX(dev_pass_id) FROM ingame_character;";
-        private const string SelectMaxAdminPassId = "SELECT MAX(admin_pass_id) FROM ingame_character;";
-        private const string SelectMaxMediaPassId = "SELECT MAX(media_pass_id) FROM ingame_character;";
-        private const string SelectMaxRegularPassId = "SELECT MAX(regular_pass_id) FROM ingame_character;";
-        private const string DeleteCharacterByIdSql = "DELETE FROM ingame_character WHERE character_id = '{0}';";
+        private const string SelectMaxDevPassIdSql = "SELECT MAX(dev_pass_id) FROM player_character;";
+        private const string SelectMaxAdminPassId = "SELECT MAX(admin_pass_id) FROM player_character;";
+        private const string SelectMaxMediaPassId = "SELECT MAX(media_pass_id) FROM player_character;";
+        private const string SelectMaxRegularPassId = "SELECT MAX(regular_pass_id) FROM player_character;";
+        private const string DeleteCharacterByIdSql = "DELETE FROM player_character WHERE character_id = '{0}';";
 
         private static readonly NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
         private readonly string ConnectionString;
