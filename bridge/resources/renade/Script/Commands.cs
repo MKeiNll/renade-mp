@@ -15,7 +15,7 @@ namespace renade
         {
             foreach (Client client in NAPI.Pools.GetAllPlayers())
             {
-                if(client.SocialClubName == socialClubName)
+                if (client.SocialClubName == socialClubName)
                     return client;
             }
             return null;
@@ -206,7 +206,7 @@ namespace renade
                 else
                     player.SendNotification("Target doesn't exist");
             }
-            catch (BanReasonTooLongException) 
+            catch (BanReasonTooLongException)
             {
                 player.SendNotification("Ban reason is too long!");
             }
@@ -222,8 +222,8 @@ namespace renade
         {
             try
             {
-                bool success = Principal.RemovePlayerBanBySocialClubName(targetName);
-                player.SendNotification("Ban removed: " + success);
+                Principal.RemovePlayerBanBySocialClubName(targetName);
+                player.SendNotification("Ban removed");
             }
             catch (Exception e)
             {
@@ -270,10 +270,12 @@ namespace renade
             try
             {
                 Client target = GetPlayerBySocialClubName(targetSocialClubName);
-                if(target != null) {
+                if (target != null)
+                {
                     target.Armor = amount;
                     target.SendChatMessage($"{target.Name} armor is: {amount}");
-                } else
+                }
+                else
                     player.SendNotification("Target doesn't exist");
             }
             catch (Exception e)
@@ -340,10 +342,12 @@ namespace renade
                 else
                 {
                     Client target = GetPlayerBySocialClubName(targetSocialClubName);
-                    if(target != null) {
+                    if (target != null)
+                    {
                         target.Health = amount;
                         target.SendChatMessage($"{target.Name} health is: {amount}");
-                    } else 
+                    }
+                    else
                         player.SendNotification("Target doesn't exist");
                 }
             }

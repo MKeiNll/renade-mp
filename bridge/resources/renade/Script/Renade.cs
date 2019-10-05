@@ -30,7 +30,7 @@ namespace renade
         private static readonly NLog.Logger Log;
 
         public static readonly PlayerRepo PlayerRepo;
-        public static readonly CharacterRepo CharacterRepo;
+        public static readonly CharacterPrimaryDataRepo CharacterPrimaryDataRepo;
         public static readonly BanRepo BanRepo;
         public static readonly Principal Principal;
 
@@ -48,7 +48,7 @@ namespace renade
             Log.Info("Setting up database...");
             string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
             PlayerRepo = new PlayerRepo(formattedConnectionString);
-            CharacterRepo = new CharacterRepo(formattedConnectionString);
+            CharacterPrimaryDataRepo = new CharacterPrimaryDataRepo(formattedConnectionString);
             BanRepo = new BanRepo(formattedConnectionString);
             Log.Info("Database set up.");
             Log.Info("Setting up principal...");

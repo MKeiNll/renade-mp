@@ -46,12 +46,12 @@ namespace renade
                 throw new FailedToIssueTemporaryBanException(socialClubName);
         }
 
-        public bool RemovePlayerBanBySocialClubName(string socialClubName)
+        public void RemovePlayerBanBySocialClubName(string socialClubName)
         {
-            bool success = BanRepo.RemoveBanBySocialClubName(socialClubName);
-            if (success)
+            if (BanRepo.RemoveBanBySocialClubName(socialClubName))
                 Log.Info("{0} has been unbanned.", socialClubName);
-            return success;
+            else
+                throw new FailedToRemoveTemporaryBanException(socialClubName);
         }
 
         public void RemoveTemporaryBans()
@@ -64,10 +64,7 @@ namespace renade
                 if (ban.BanValue < DateTimeOffset.Now.ToUnixTimeMilliseconds())
                 {
                     Log.Info("Found ban: {0}.", ban);
-                    string socialClubName = ban.SocialClubName;
-                    if (!BanRepo.RemoveBanBySocialClubName(socialClubName))
-                        throw new FailedToRemoveTemporaryBanException(socialClubName);
-                    Log.Info("Ban removed.");
+                    RemovePlayerBanBySocialClubName(ban.SocialClubName);
                     bansRemoved++;
                 }
             }
