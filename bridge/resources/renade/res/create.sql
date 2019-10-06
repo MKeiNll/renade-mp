@@ -111,7 +111,8 @@ VALUES
 
 INSERT INTO character_appearance (character_id, gender, mother, father, similarity, skin_color, nose_width, nose_height, nose_length, nose_bridge, nose_tip, nose_bridge_shift, brow_height, brow_width, cheekbone_height, cheekbone_width, cheeks_width, eyes, lips, jaw_width, jaw_height, chin_length, chin_position, chin_width, chin_shape, neck_width, hair, eyebrows, beard, eye_color, hair_color) 
 VALUES 
-(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 INSERT INTO character_pass (character_id, pass_type, id)
 VALUES 
