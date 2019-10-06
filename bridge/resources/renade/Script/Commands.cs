@@ -14,10 +14,8 @@ namespace renade
         private Client GetPlayerBySocialClubName(string socialClubName)
         {
             foreach (Client client in NAPI.Pools.GetAllPlayers())
-            {
                 if (client.SocialClubName == socialClubName)
                     return client;
-            }
             return null;
         }
 
@@ -27,9 +25,7 @@ namespace renade
             try
             {
                 foreach (Client player in NAPI.Player.GetPlayersInRadiusOfPlayer(20, client))
-                {
                     client.SendChatMessage($"~c~{player.Name} {text}");
-                }
             }
             catch (Exception e)
             {
@@ -365,10 +361,7 @@ namespace renade
 
             try
             {
-                if (player.Transparency == 255)
-                    player.Transparency = 0;
-                else
-                    player.Transparency = 255;
+                player.Transparency = player.Transparency == 255 ? 0 : 255;
             }
             catch (Exception e)
             {
@@ -494,9 +487,7 @@ namespace renade
             try
             {
                 foreach (Client player in NAPI.Player.GetPlayersInRadiusOfPlayer(radius, targetName))
-                {
                     client.SendChatMessage($"{player.Name}");
-                }
             }
             catch (Exception e)
             {

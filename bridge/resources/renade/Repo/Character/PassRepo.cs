@@ -45,10 +45,7 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPassByCharacterIdSql, characterId), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return new Pass(reader.GetInt32(0), (PassType)reader.GetInt16(1));
-                    else
-                        return null;
+                    return reader.Read() ? new Pass(reader.GetInt32(0), (PassType)reader.GetInt16(1)) : null;
             }
         }
 
@@ -59,10 +56,7 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectMaxPassValueByTypeSql, (int)passType), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return reader.GetInt32(0);
-                    else
-                        return -1;
+                    return reader.Read() ? reader.GetInt32(0) : -1;
             }
         }
 

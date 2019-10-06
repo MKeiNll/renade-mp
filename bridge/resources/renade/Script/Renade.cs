@@ -150,10 +150,9 @@ namespace renade
                 {
                     List<Player> disconnectedPlayer = OnlinePlayers.Where(p => p.SocialClubName == socialClubName).ToList();
                     int foundPlayers = disconnectedPlayer.Count;
-                    if (foundPlayers == 1)
-                        OnlinePlayers.Remove(disconnectedPlayer[0]);
-                    else
+                    if (foundPlayers != 1)
                         throw new FailedToRemovePlayerFromOnlineListException(socialClubName, foundPlayers);
+                    OnlinePlayers.Remove(disconnectedPlayer[0]);
                 }
             }
             catch (Exception e)

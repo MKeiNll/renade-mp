@@ -94,10 +94,9 @@ namespace renade
             for (int i = 0; i < 6; i++)
                 resultString += Random.Next(0, 9).ToString();
             int result = 0;
-            if (Int32.TryParse(resultString, out result))
-                return result;
-            else
+            if (!Int32.TryParse(resultString, out result))
                 throw new FailedToGenerateCharacterBankIdOrPhoneException(resultString);
+            return result;
         }
 
         public void TestRepo()

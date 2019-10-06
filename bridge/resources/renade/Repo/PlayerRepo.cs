@@ -140,10 +140,7 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerByLoginSql, login), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return true;
-                    else
-                        return false;
+                    return reader.Read();
             }
         }
 
@@ -154,10 +151,7 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerByMailSql, mail), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return true;
-                    else
-                        return false;
+                    return reader.Read();
             }
         }
 
@@ -168,10 +162,7 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerBySocialClubNameSql, socialClubName), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return true;
-                    else
-                        return false;
+                    return reader.Read();
             }
         }
 
@@ -182,10 +173,8 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerByLoginSql, login), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return new Player(login, reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3));
-                    else
-                        return null;
+                    return reader.Read() ? new Player(login, reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3))
+                        : null;
             }
         }
 
@@ -196,10 +185,8 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerBySocialClubNameSql, socialClubName), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return new Player(reader.GetString(0), socialClubName, reader.GetString(1), reader.GetString(2), reader.GetInt64(3));
-                    else
-                        return null;
+                    return reader.Read() ? new Player(reader.GetString(0), socialClubName, reader.GetString(1), reader.GetString(2), reader.GetInt64(3))
+                        : null;
             }
         }
 
@@ -210,10 +197,8 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerByMailSql, mail), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return new Player(reader.GetString(0), reader.GetString(1), mail, reader.GetString(2), reader.GetInt64(3));
-                    else
-                        return null;
+                    return reader.Read() ? new Player(reader.GetString(0), reader.GetString(1), mail, reader.GetString(2), reader.GetInt64(3))
+                        : null;
             }
         }
 

@@ -81,10 +81,8 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectBanBySocialClubNameSql, socialClubName), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return new Ban((BanCategory)reader.GetInt16(2), socialClubName, reader.GetString(3), reader.GetInt64(0), reader.GetString(1));
-                    else
-                        return null;
+                    return reader.Read() ? new Ban((BanCategory)reader.GetInt16(2), socialClubName, reader.GetString(3), reader.GetInt64(0), reader.GetString(1))
+                        : null;
             }
         }
 
@@ -95,10 +93,8 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectBanByHwidSql, hwid), connection))
                 using (MySqlDataReader reader = command.ExecuteReader())
-                    if (reader.Read())
-                        return new Ban((BanCategory)reader.GetInt16(2), hwid, reader.GetString(3), reader.GetInt64(0), reader.GetString(1));
-                    else
-                        return null;
+                    return reader.Read() ? new Ban((BanCategory)reader.GetInt16(2), hwid, reader.GetString(3), reader.GetInt64(0), reader.GetString(1))
+                        : null;
             }
         }
 

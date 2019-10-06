@@ -26,24 +26,17 @@ namespace renade
             float chinLength, float chinPosition, float chinWidth, float chinShape, float neckWidth, Hair hair, Eyebrows eyebrows,
             Beard beard, EyeColor eyeColor, HairColor hairColor)
         {
-            if (CharacterPrimaryDataRepo.CreateNewCharacterPrimaryData(playerSocialClubName, firstName, familyName))
-            {
-                int characterId = CharacterPrimaryDataRepo.GetCharacterPrimaryDataByPlayerSocialClubName(playerSocialClubName)
-                    .OrderByDescending(item => item.Id).First().Id;
-                if (PassRepo.CreatePass(characterId, PassType.Regular)) // TODO - implement different pass types
-                {
-                    if (AppearanceRepo.CreateAppearance(characterId, gender, mother, father, similarity, skinColor, noseHeight, noseWidth, noseLength,
-                        noseBridge, noseTip, noseBridgeTip, browWidth, browHeight, cheekboneWidth, cheekboneHeight, cheeksWidth, eyes,
-                        lips, jawWidth, jawHeight, chinLength, chinPosition, chinWidth, chinShape, neckWidth, hair, eyebrows, beard, eyeColor, hairColor))
-                        Log.Info("Character '{0} {1}' successfully created for player '{2}'", firstName, familyName, playerSocialClubName);
-                    else
-                        throw new FailedToCreateCharacterAppearanceException(characterId);
-                }
-                else
-                    throw new FailedToCreateCharacterPassException(characterId);
-            }
-            else
+            if (!CharacterPrimaryDataRepo.CreateNewCharacterPrimaryData(playerSocialClubName, firstName, familyName))
                 throw new FailedToCreateCharacterPrimaryDataException(playerSocialClubName);
+            int characterId = CharacterPrimaryDataRepo.GetCharacterPrimaryDataByPlayerSocialClubName(playerSocialClubName)
+                .OrderByDescending(item => item.Id).First().Id;
+            if (!PassRepo.CreatePass(characterId, PassType.Regular)) // TODO - implement different pass types
+                throw new FailedToCreateCharacterPassException(characterId);
+            if (!AppearanceRepo.CreateAppearance(characterId, gender, mother, father, similarity, skinColor, noseHeight, noseWidth, noseLength,
+                noseBridge, noseTip, noseBridgeTip, browWidth, browHeight, cheekboneWidth, cheekboneHeight, cheeksWidth, eyes,
+                lips, jawWidth, jawHeight, chinLength, chinPosition, chinWidth, chinShape, neckWidth, hair, eyebrows, beard, eyeColor, hairColor))
+                throw new FailedToCreateCharacterAppearanceException(characterId);
+            Log.Info("Character '{0} {1}' successfully created for player '{2}'", firstName, familyName, playerSocialClubName);
         }
 
         public List<Character> GetPlayerCharactersBySocialClubName(string playerSocialClubName)
@@ -53,23 +46,19 @@ namespace renade
             {
                 int characterId = primaryData.Id;
                 Pass pass = PassRepo.GetPassByCharacterId(characterId);
-                if (pass != null)
-                {
-                    Appearance appearance = AppearanceRepo.GetAppearanceByCharacterId(characterId);
-                    if (appearance != null)
-                        characters.Add(new Character(primaryData, pass, PhoneContactRepo.GetPhoneContactsByCharacterId(characterId), appearance));
-                    else
-                        throw new CharacterAppearanceDoesNotExistException(characterId);
-                }
-                else
+                if (pass == null)
                     throw new CharacterPassDoesNotExistException(characterId);
+                Appearance appearance = AppearanceRepo.GetAppearanceByCharacterId(characterId);
+                if (appearance == null)
+                    throw new CharacterAppearanceDoesNotExistException(characterId);
+                characters.Add(new Character(primaryData, pass, PhoneContactRepo.GetPhoneContactsByCharacterId(characterId), appearance));
             }
             return characters;
         }
 
         public void SaveCharacter()
         {
-
+            // TODO 
         }
     }
 }
