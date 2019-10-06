@@ -34,6 +34,15 @@ namespace renade
 
         static Renade()
         {
+            Log.Info("TESTING START");
+            Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(RenadeConfigLocation, System.Text.Encoding.UTF8));
+            string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
+            new AppearanceRepo(formattedConnectionString).TestRepo();
+            new PassRepo(formattedConnectionString).TestRepo();
+            new PhoneContactRepo(formattedConnectionString).TestRepo();
+            new PrimaryDataRepo(formattedConnectionString).TestRepo();
+            Log.Info("TESTING END");
+
             NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(NLogConfigLocation);
             Log = NLog.LogManager.GetCurrentClassLogger();
 
@@ -68,7 +77,7 @@ namespace renade
                         Log.Info("Server time set.");
                     });
                     BanService.RemoveTemporaryBans();
-                    
+
                     Log.Info("Global timer executed.");
                     Log.Info(LogTimerSeparator);
                 }
@@ -166,7 +175,7 @@ namespace renade
                 string socialClubName = player.SocialClubName;
 
                 Player playerAccount = PlayerRepo.GetPlayerByLogin(loginOrMail);
-                if(playerAccount == null)
+                if (playerAccount == null)
                     playerAccount = PlayerRepo.GetPlayerByMail(loginOrMail);
 
                 if (playerAccount != null && PlayerRepo.IsPlayerPasswordValid(playerAccount, password) && playerAccount.SocialClubName == socialClubName)
@@ -197,7 +206,7 @@ namespace renade
                 {
                     try
                     {
-                        if(!PlayerRepo.CreateNewPlayer(login, socialClubName, mail, password1))
+                        if (!PlayerRepo.CreateNewPlayer(login, socialClubName, mail, password1))
                             throw new FailedToCreatePlayerException(login, socialClubName, mail);
                         // TODO - do not create character here
                         CharacterRepo.CreateNewCharacter(socialClubName, "Steve", "Jobsa", PassType.Regular, Gender.Male, 1, 1, 1, 1, 1, "asd");
@@ -252,9 +261,9 @@ namespace renade
 
                 UnauthorizedPlayers.Remove(socialClubName);
                 OnlinePlayers.Add(PlayerRepo.GetPlayerBySocialClubName(socialClubName));
-                
+
                 string playerIp = player.Address;
-                if(!PlayerRepo.UpdatePlayerIpHistoryBySocialClubName(socialClubName, playerIp))
+                if (!PlayerRepo.UpdatePlayerIpHistoryBySocialClubName(socialClubName, playerIp))
                     throw new FailedToUpdatePlayerIpHistoryException(playerIp);
 
                 player.Dimension = MainDimension;
@@ -267,6 +276,11 @@ namespace renade
             {
                 Log.Error(e);
             }
+        }
+
+        private void TestRenade()
+        {
+
         }
     }
 }

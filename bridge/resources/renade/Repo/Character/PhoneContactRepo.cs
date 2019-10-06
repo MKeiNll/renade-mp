@@ -8,6 +8,7 @@ namespace renade
     {
         private const string InsertPhoneContactSql = "INSERT INTO character_phone_contact (character_id, phone_number) VALUES ({0}, {1});";
         private const string SelectPhoneContactsByCharacterIdSql = "SELECT phone_number FROM character_phone_contact WHERE character_id = {0};";
+        private const string DeletePhoneContactByCharacterIdAndPhoneNumberSql = "DELETE FROM phone_number WHERE character_id = {0} AND phone_number = {1};";
 
         private static readonly NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
         private readonly string ConnectionString;
@@ -45,6 +46,30 @@ namespace renade
                     }
                 }
             }
+        }
+
+        public bool DeletePhoneContact(int characterId, int phoneNumber)
+        {
+            using (MySqlConnection connection = new MySqlConnection(ConnectionString))
+            {
+                connection.Open();
+                using (MySqlCommand command = new MySqlCommand(string.Format(DeletePhoneContactByCharacterIdAndPhoneNumberSql, characterId, phoneNumber), connection))
+                {
+                    return command.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+        public void TestRepo()
+        {
+            Log.Info("Testing AppearanceRepo...");
+            Log.Info("Delete existing: " + DeletePhoneContact(1234, 1111) + " " + DeletePhoneContact(1234, 2222));
+            Log.Info("Create 1: " + CreatePhoneContact(1234, 1111));
+            Log.Info("Create 2: " + CreatePhoneContact(1234, 2222));
+            Log.Info("Get:");
+            GetPhoneContactsByCharacterId(1234).ForEach((e) => Log.Info(e));
+            Log.Info("Delete: " + DeletePhoneContact(1234, 1111) + " " + DeletePhoneContact(1234, 2222));
+            Log.Info("Done.");
         }
     }
 }

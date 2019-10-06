@@ -300,7 +300,8 @@ namespace renade
             return BC.Verify(password, player.Password);
         }
 
-        public void TestRepo() {
+        public void TestRepo()
+        {
             Log.Info("Testing PlayerRepo...");
             Log.Info("Delete existing: " + DeletePlayerBySocialClubName("1234"));
             Log.Info("Create: " + CreateNewPlayer("1234", "1234", "1234", "12341234"));

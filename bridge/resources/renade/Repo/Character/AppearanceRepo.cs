@@ -15,6 +15,7 @@ namespace renade
             "nose_height, nose_length, nose_bridge, nose_tip, nose_bridge_shift, brow_height, brow_width, cheekbone_height, cheekbone_width, cheeks_width, " +
             "eyes, lips, jaw_width, jaw_height, chin_length, chin_position, chin_width, chin_shape, neck_width, hair, eyebrows, beard, eye_color, hair_color " +
             "FROM character_appearance WHERE character_id = {0});";
+        private const string DeleteAppearanceByCharacterIdSql = "DELETE FROM character_appearance WHERE character_id = {0};";
 
         private static readonly NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
         private readonly string ConnectionString;
@@ -63,6 +64,28 @@ namespace renade
                     }
                 }
             }
+        }
+
+        public bool DeleteAppearanceByCharacterId(int characterId)
+        {
+            using (MySqlConnection connection = new MySqlConnection(ConnectionString))
+            {
+                connection.Open();
+                using (MySqlCommand command = new MySqlCommand(string.Format(DeleteAppearanceByCharacterIdSql, characterId), connection))
+                {
+                    return command.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+        public void TestRepo()
+        {
+            Log.Info("Testing AppearanceRepo...");
+            Log.Info("Delete existing: " + DeleteAppearanceByCharacterId(1234));
+            Log.Info("Create: " + CreateAppearance(1234, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+            Log.Info("Get: " + GetAppearanceByCharacterId(1234));
+            Log.Info("Delete: " + DeleteAppearanceByCharacterId(1234));
+            Log.Info("Done.");
         }
     }
 }

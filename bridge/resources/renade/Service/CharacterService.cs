@@ -1,7 +1,5 @@
 using System.Linq;
-using System;
 using System.Collections.Generic;
-using GTANetworkAPI;
 
 namespace renade
 {
@@ -71,7 +69,7 @@ namespace renade
 
         public void SaveCharacter()
         {
-            
+
         }
     }
 }
