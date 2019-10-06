@@ -40,10 +40,7 @@ namespace renade
             Log.Info("TESTING START");
             Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(RenadeConfigLocation, System.Text.Encoding.UTF8));
             string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
-            new AppearanceRepo(formattedConnectionString).TestRepo();
-            new PassRepo(formattedConnectionString).TestRepo();
-            new PhoneContactRepo(formattedConnectionString).TestRepo();
-            new PrimaryDataRepo(formattedConnectionString).TestRepo();
+            new PlayerRepo(formattedConnectionString).TestRepo();
             Log.Info("TESTING END");
 
             // NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(NLogConfigLocation);

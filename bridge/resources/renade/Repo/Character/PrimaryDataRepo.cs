@@ -114,7 +114,7 @@ namespace renade
             Log.Info("Create: " + CreateNewCharacterPrimaryData("1234", "1234", "1234"));
             Log.Info("Get:");
             GetCharacterPrimaryDataByPlayerSocialClubName("1234").ForEach((e) => Log.Info(e));
-            Log.Info("Delete: " + DeleteCharacterPrimaryDataById(3));
+            Log.Info("Delete: " + DeleteCharacterPrimaryDataById(3)); 
             Log.Info("Done.");
         }
     }

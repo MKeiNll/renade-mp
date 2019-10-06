@@ -34,7 +34,7 @@ namespace renade
 
         public override string ToString()
         {
-            return String.Format("Character primary data - Id: {0}; Player social club name: {1}; First Name: {2}; Family Name: {3}; Level: {4};" +
+            return String.Format("Character primary data - Id: {0}; Player social club name: {1}; First Name: {2}; Family Name: {3}; Level: {4}; " +
                 "Registration Date: {5}; X: {6}; Y: {7}; Z: {8}", Id, PlayerSocialClubName, FirstName, FamilyName, Level,
                 DateTimeOffset.FromUnixTimeMilliseconds(RegDate).ToLocalTime(), PosX, PosY, PosZ);
         }

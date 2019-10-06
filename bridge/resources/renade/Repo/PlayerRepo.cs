@@ -308,12 +308,16 @@ namespace renade
             Log.Info("Get: " + GetPlayerByLogin("1234"));
             Log.Info("Get: " + GetPlayerByMail("1234"));
             Log.Info("Get: " + GetPlayerBySocialClubName("1234"));
-            Log.Info("Update: " + UpdatePlayerIpHistoryBySocialClubName("1234", "ip"));
+            Log.Info("Update ip 1: " + UpdatePlayerIpHistoryBySocialClubName("1234", "ip1"));
+            Log.Info("Update ip 2: " + UpdatePlayerIpHistoryBySocialClubName("1234", "ip2"));
+            Log.Info("Update ip 3: " + UpdatePlayerIpHistoryBySocialClubName("1234", "ip3"));
+            Log.Info("Update ip 4: " + UpdatePlayerIpHistoryBySocialClubName("1234", "ip4"));
             Log.Info("Get: " + String.Join(", ", GetPlayerIpHistoryBySocialClubName("1234")));
             Log.Info("Taken: " + IsPlayerSocialClubNameTaken("1234"));
             Log.Info("Taken: " + IsPlayerLoginTaken("1234"));
             Log.Info("Taken: " + IsPlayerMailTaken("1234"));
-            Log.Info("Valid: " + IsPlayerPasswordValid(GetPlayerByLogin("1234"), "12341234"));
+            Log.Info("Valid ok: " + IsPlayerPasswordValid(GetPlayerByLogin("1234"), "12341234"));
+            Log.Info("Valid not ok: " + IsPlayerPasswordValid(GetPlayerByLogin("1234"), "123412341"));
             Log.Info("Delete: " + DeletePlayerBySocialClubName("1234"));
             Log.Info("Done.");
         }
