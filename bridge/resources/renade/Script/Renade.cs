@@ -29,11 +29,14 @@ namespace renade
         private static Timer GlobalTimer;
         private static readonly NLog.Logger Log;
 
+        public static readonly PlayerRepo PlayerRepo;
         public static readonly BanService BanService;
         public static readonly CharacterService CharacterService;
 
         static Renade()
         {
+            NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(NLogConfigLocation);
+            Log = NLog.LogManager.GetCurrentClassLogger();
             Log.Info("TESTING START");
             Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(RenadeConfigLocation, System.Text.Encoding.UTF8));
             string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
@@ -43,53 +46,56 @@ namespace renade
             new PrimaryDataRepo(formattedConnectionString).TestRepo();
             Log.Info("TESTING END");
 
-            NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(NLogConfigLocation);
-            Log = NLog.LogManager.GetCurrentClassLogger();
+            // NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(NLogConfigLocation);
+            // Log = NLog.LogManager.GetCurrentClassLogger();
 
-            Log.Info(LogMainSeparator);
-            Log.Info("Setting up RenadeMP...");
+            // Log.Info(LogMainSeparator);
+            // Log.Info("Setting up RenadeMP...");
 
-            Log.Info("Processing config...");
-            Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(RenadeConfigLocation, System.Text.Encoding.UTF8));
-            Log.Info("Config processed.");
+            // Log.Info("Processing config...");
+            // Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(RenadeConfigLocation, System.Text.Encoding.UTF8));
+            // Log.Info("Config processed.");
 
-            Log.Info("Setting up services...");
-            string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
-            Log.Info("Setting up ban service...");
-            BanService = new BanService(formattedConnectionString);
-            Log.Info("Ban service set up.");
-            Log.Info("Setting up character service...");
-            CharacterService = new CharacterService(formattedConnectionString);
-            Log.Info("Character service set up.");
-            Log.Info("Services set up.");
+            // Log.Info("Setting up services...");
+            // string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
+            // Log.Info("Setting up player repo...");
+            // PlayerRepo = new PlayerRepo(formattedConnectionString);
+            // Log.Info("Player repo set up.");
+            // Log.Info("Setting up ban service...");
+            // BanService = new BanService(formattedConnectionString);
+            // Log.Info("Ban service set up.");
+            // Log.Info("Setting up character service...");
+            // CharacterService = new CharacterService(formattedConnectionString);
+            // Log.Info("Character service set up.");
+            // Log.Info("Services set up.");
 
-            Log.Info("Setting up global timer...");
-            GlobalTimer = new Timer((e) =>
-            {
-                try
-                {
-                    Log.Info(LogTimerSeparator);
-                    Log.Info("Global timer triggered. (Current time: {0})", DateTimeOffset.Now);
+            // Log.Info("Setting up global timer...");
+            // GlobalTimer = new Timer((e) =>
+            // {
+            //     try
+            //     {
+            //         Log.Info(LogTimerSeparator);
+            //         Log.Info("Global timer triggered. (Current time: {0})", DateTimeOffset.Now);
 
-                    NAPI.Task.Run(() =>
-                    {
-                        NAPI.World.SetTime(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-                        Log.Info("Server time set.");
-                    });
-                    BanService.RemoveTemporaryBans();
+            //         NAPI.Task.Run(() =>
+            //         {
+            //             NAPI.World.SetTime(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+            //             Log.Info("Server time set.");
+            //         });
+            //         BanService.RemoveTemporaryBans();
 
-                    Log.Info("Global timer executed.");
-                    Log.Info(LogTimerSeparator);
-                }
-                catch (Exception exc)
-                {
-                    Log.Error(exc);
-                }
-            }, null, TimeSpan.Zero, TimeSpan.FromMinutes(GlobalTimerInteval));
-            Log.Info("Global timer set up.");
+            //         Log.Info("Global timer executed.");
+            //         Log.Info(LogTimerSeparator);
+            //     }
+            //     catch (Exception exc)
+            //     {
+            //         Log.Error(exc);
+            //     }
+            // }, null, TimeSpan.Zero, TimeSpan.FromMinutes(GlobalTimerInteval));
+            // Log.Info("Global timer set up.");
 
-            Log.Info("RenadeMP set up.");
-            Log.Info(LogMainSeparator);
+            // Log.Info("RenadeMP set up.");
+            // Log.Info(LogMainSeparator);
         }
 
         private void LogConnection(string socialClubName)
@@ -180,9 +186,10 @@ namespace renade
 
                 if (playerAccount != null && PlayerRepo.IsPlayerPasswordValid(playerAccount, password) && playerAccount.SocialClubName == socialClubName)
                 {
-                    Character character = CharacterRepo.GetCharactersByPlayerSocialClubNameSql(playerAccount.SocialClubName)[0];
+                    Character character = CharacterService.GetPlayerCharactersBySocialClubName(playerAccount.SocialClubName)[0];
 
-                    player.TriggerEvent("loginOrRegisterPlayerSuccess", playerAccount.Login, character.FirstName, character.FamilyName, character.Level);
+                    player.TriggerEvent("loginOrRegisterPlayerSuccess", playerAccount.Login,
+                        character.PrimaryData.FirstName, character.PrimaryData.FamilyName, character.PrimaryData.Level);
                     Log.Info("Player {0} successfully logged in.", socialClubName);
                 }
                 else
@@ -208,8 +215,6 @@ namespace renade
                     {
                         if (!PlayerRepo.CreateNewPlayer(login, socialClubName, mail, password1))
                             throw new FailedToCreatePlayerException(login, socialClubName, mail);
-                        // TODO - do not create character here
-                        CharacterRepo.CreateNewCharacter(socialClubName, "Steve", "Jobsa", PassType.Regular, Gender.Male, 1, 1, 1, 1, 1, "asd");
                     }
                     catch (PlayerLoginTooLongException) { } // TODO
                     catch (PlayerSocialClubNameTooLongException) { } // TODO
@@ -222,8 +227,9 @@ namespace renade
                     catch (CharacterFirstNameTooLongException) { } // TODO
                     catch (CharacterFamilyNameTooLongException) { } // TODO
 
-                    Character character = CharacterRepo.GetCharactersByPlayerSocialClubNameSql(socialClubName)[0];
-                    player.TriggerEvent("loginOrRegisterPlayerSuccess", login, character.FirstName, character.FamilyName, character.Level);
+                    Character character = CharacterService.GetPlayerCharactersBySocialClubName(socialClubName)[0];
+                    player.TriggerEvent("loginOrRegisterPlayerSuccess", login, character.PrimaryData.FirstName,
+                        character.PrimaryData.FamilyName, character.PrimaryData.Level);
                     Log.Info("Player {0} successfully registered.", socialClubName);
                 }
                 else
@@ -244,6 +250,9 @@ namespace renade
             try
             {
                 // TODO - add all parameters & print them
+                // CharacterService.CreateCharacter(socialClubName, "Steve", "Jobsa", PassType.Regular, Gender.Male, 1, 1, 1, 1, 1, "asd");
+                // catch (CharacterFirstNameTooLongException) { } // TODO
+                // catch (CharacterFamilyNameTooLongException) { } // TODO
             }
             catch (Exception e)
             {
@@ -269,18 +278,13 @@ namespace renade
                 player.Dimension = MainDimension;
                 player.TriggerEvent("spawnPlayerSuccess");
                 LogAuthorization(socialClubName);
-                Character character = CharacterRepo.GetCharactersByPlayerSocialClubNameSql(socialClubName)[0];
-                player.Position = new Vector3(character.PosX, character.PosY, character.PosZ);
+                Character character = CharacterService.GetPlayerCharactersBySocialClubName(socialClubName)[0];
+                player.Position = new Vector3(character.PrimaryData.PosX, character.PrimaryData.PosY, character.PrimaryData.PosZ);
             }
             catch (Exception e)
             {
                 Log.Error(e);
             }
-        }
-
-        private void TestRenade()
-        {
-
         }
     }
 }

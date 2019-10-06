@@ -8,7 +8,7 @@ namespace renade
     {
         private const string DefaultErrorMessage = "~r~Something went wrong! ;(";
         private readonly Regex TimeRegex = new Regex(@"^(\d)+([smhdy])$", RegexOptions.IgnoreCase);
-        private static readonly Principal Principal = Renade.Principal;
+        private static readonly BanService BanService = Renade.BanService;
         private static readonly NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
 
         private Client GetPlayerBySocialClubName(string socialClubName)
@@ -78,7 +78,7 @@ namespace renade
         {
             try
             {
-                player.SendChatMessage(Principal.IsPlayerBanned(target).ToString());
+                player.SendChatMessage(BanService.IsPlayerBanned(target).ToString());
             }
             catch (Exception e)
             {
@@ -98,7 +98,7 @@ namespace renade
             {
                 Client target = GetPlayerBySocialClubName(targetSocialClubName);
                 if (target != null)
-                    Principal.IssueTemporaryBan(target, reason, category, ConvertTimeToEpoch(time));
+                    BanService.IssueTemporaryBan(target, reason, category, ConvertTimeToEpoch(time));
                 else
                     player.SendNotification("Target doesn't exist");
             }
@@ -202,7 +202,7 @@ namespace renade
             {
                 Client target = GetPlayerBySocialClubName(targetSocialClubName);
                 if (target != null)
-                    Principal.IssuePermanentBan(target, reason, category);
+                    BanService.IssuePermanentBan(target, reason, category);
                 else
                     player.SendNotification("Target doesn't exist");
             }
@@ -222,7 +222,7 @@ namespace renade
         {
             try
             {
-                Principal.RemovePlayerBanBySocialClubName(targetName);
+                BanService.RemovePlayerBanBySocialClubName(targetName);
                 player.SendNotification("Ban removed");
             }
             catch (Exception e)
