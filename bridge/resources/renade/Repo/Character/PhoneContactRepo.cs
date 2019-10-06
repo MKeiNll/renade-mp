@@ -24,9 +24,7 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(InsertPhoneContactSql, characterId, phoneNumber), connection))
-                {
                     return command.ExecuteNonQuery() > 0;
-                }
             }
         }
 
@@ -37,14 +35,10 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPhoneContactsByCharacterIdSql, characterId), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                            phoneContacts.Add(new PhoneContact(reader.GetInt32(0)));
-                        return phoneContacts;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
+                        phoneContacts.Add(new PhoneContact(reader.GetInt32(0)));
+                return phoneContacts;
             }
         }
 
@@ -54,9 +48,7 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(DeletePhoneContactByCharacterIdAndPhoneNumberSql, characterId, phoneNumber), connection))
-                {
                     return command.ExecuteNonQuery() > 0;
-                }
             }
         }
 

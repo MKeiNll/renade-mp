@@ -39,9 +39,7 @@ namespace renade
                     skinColor, noseHeight, noseWidth, noseLength, noseBridge, noseTip, noseBridgeTip, browWidth, browHeight, cheekboneWidth, cheekboneHeight, cheeksWidth,
                     eyes, lips, jawWidth, jawHeight, chinLength, chinPosition, chinWidth, chinShape, neckWidth, (int)hair, (int)eyebrows, (int)beard, (int)eyeColor,
                     (int)hairColor), connection))
-                {
                     return command.ExecuteNonQuery() > 0;
-                }
             }
         }
 
@@ -51,19 +49,15 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectAppearanceByCharacterIdSql, characterId), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            return new Appearance((Gender)reader.GetInt16(0), (Mother)reader.GetInt16(1), (Father)reader.GetInt16(2), reader.GetFloat(3), reader.GetFloat(4),
-                                reader.GetFloat(5), reader.GetFloat(6), reader.GetFloat(7), reader.GetFloat(8), reader.GetFloat(9), reader.GetFloat(10), reader.GetFloat(11),
-                                reader.GetFloat(12), reader.GetFloat(13), reader.GetFloat(14), reader.GetFloat(15), reader.GetFloat(16), reader.GetFloat(17), reader.GetFloat(18),
-                                reader.GetFloat(19), reader.GetFloat(20), reader.GetFloat(21), reader.GetFloat(22), reader.GetFloat(23), reader.GetFloat(24),
-                                (Hair)reader.GetInt16(25), (Eyebrows)reader.GetInt16(26), (Beard)reader.GetInt16(27), (EyeColor)reader.GetInt16(28), (HairColor)reader.GetInt16(29));
-                        else
-                            return null;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
+                        return new Appearance((Gender)reader.GetInt16(0), (Mother)reader.GetInt16(1), (Father)reader.GetInt16(2), reader.GetFloat(3), reader.GetFloat(4),
+                            reader.GetFloat(5), reader.GetFloat(6), reader.GetFloat(7), reader.GetFloat(8), reader.GetFloat(9), reader.GetFloat(10), reader.GetFloat(11),
+                            reader.GetFloat(12), reader.GetFloat(13), reader.GetFloat(14), reader.GetFloat(15), reader.GetFloat(16), reader.GetFloat(17), reader.GetFloat(18),
+                            reader.GetFloat(19), reader.GetFloat(20), reader.GetFloat(21), reader.GetFloat(22), reader.GetFloat(23), reader.GetFloat(24),
+                            (Hair)reader.GetInt16(25), (Eyebrows)reader.GetInt16(26), (Beard)reader.GetInt16(27), (EyeColor)reader.GetInt16(28), (HairColor)reader.GetInt16(29));
+                    else
+                        return null;
             }
         }
 
@@ -73,9 +67,7 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(DeleteAppearanceByCharacterIdSql, characterId), connection))
-                {
                     return command.ExecuteNonQuery() > 0;
-                }
             }
         }
 

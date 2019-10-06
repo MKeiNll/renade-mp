@@ -46,7 +46,6 @@ namespace renade
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(InsertCharacterPrimaryDataSql, playerSocialClubName, firstName, familyName,
                     regDate, phoneNumber, bankId), connection))
-                {
                     try
                     {
                         return command.ExecuteNonQuery() > 0;
@@ -60,7 +59,7 @@ namespace renade
                         }
                         throw;
                     }
-                }
+
             }
         }
 
@@ -71,15 +70,11 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectCharacterPrimaryDataByPlayerSocialClubNameSql, socialClubName), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                            primaryDataList.Add(new PrimaryData(socialClubName, reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3),
-                                reader.GetInt64(4), reader.GetInt32(5), reader.GetFloat(6), reader.GetFloat(7), reader.GetFloat(8)));
-                        return primaryDataList;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
+                        primaryDataList.Add(new PrimaryData(socialClubName, reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3),
+                            reader.GetInt64(4), reader.GetInt32(5), reader.GetFloat(6), reader.GetFloat(7), reader.GetFloat(8)));
+                return primaryDataList;
             }
         }
 
@@ -89,9 +84,7 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(DeleteCharacterPrimaryDataByIdSql, characterId), connection))
-                {
                     return command.ExecuteNonQuery() > 0;
-                }
             }
         }
 
@@ -114,7 +107,7 @@ namespace renade
             Log.Info("Create: " + CreateNewCharacterPrimaryData("1234", "1234", "1234"));
             Log.Info("Get:");
             GetCharacterPrimaryDataByPlayerSocialClubName("1234").ForEach((e) => Log.Info(e));
-            Log.Info("Delete: " + DeleteCharacterPrimaryDataById(3)); 
+            Log.Info("Delete: " + DeleteCharacterPrimaryDataById(3));
             Log.Info("Done.");
         }
     }

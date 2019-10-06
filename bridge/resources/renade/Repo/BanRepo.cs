@@ -8,7 +8,7 @@ namespace renade
     {
         public const int MaxBanReasonLength = 128;
         public const int MaxHwidLength = 128;
-        
+
         private const string SelectBanBySocialClubNameSql = "SELECT ban, reason, category, hwid FROM player_ban WHERE player_social_club_name = '{0}';";
         private const string SelectBanByHwidSql = "SELECT ban, reason, category, player_social_club_name FROM player_ban WHERE hwid = '{0}';";
         private const string InsertBanSql = "INSERT INTO player_ban (player_social_club_name, hwid, reason, category, ban) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}');";
@@ -34,7 +34,6 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(InsertBanSql, socialClubName, hwid, reason, (int)category, ban), connection))
-                {
                     try
                     {
                         return command.ExecuteNonQuery() > 0;
@@ -48,7 +47,6 @@ namespace renade
                         }
                         throw;
                     }
-                }
             }
         }
 
@@ -58,31 +56,21 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(DeleteBanBySocialClubNameSql, socialClubName), connection))
-                {
                     return command.ExecuteNonQuery() > 0;
-                }
             }
         }
 
         public List<Ban> GetAllTemporaryBans()
         {
             List<Ban> bans = new List<Ban>();
-
             using (MySqlConnection connection = new MySqlConnection(ConnectionString))
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(SelectAllTemporaryBansSql, connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            bans.Add(new Ban((BanCategory)reader.GetInt16(3), reader.GetString(0), reader.GetString(1), reader.GetInt64(4), reader.GetString(2)));
-                        }
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
+                        bans.Add(new Ban((BanCategory)reader.GetInt16(3), reader.GetString(0), reader.GetString(1), reader.GetInt64(4), reader.GetString(2)));
             }
-
             return bans;
         }
 
@@ -92,17 +80,11 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectBanBySocialClubNameSql, socialClubName), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new Ban((BanCategory)reader.GetInt16(2), socialClubName, reader.GetString(3), reader.GetInt64(0), reader.GetString(1));
-                        }
-                        else
-                            return null;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
+                        return new Ban((BanCategory)reader.GetInt16(2), socialClubName, reader.GetString(3), reader.GetInt64(0), reader.GetString(1));
+                    else
+                        return null;
             }
         }
 
@@ -112,17 +94,11 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectBanByHwidSql, hwid), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new Ban((BanCategory)reader.GetInt16(2), hwid, reader.GetString(3), reader.GetInt64(0), reader.GetString(1));
-                        }
-                        else
-                            return null;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
+                        return new Ban((BanCategory)reader.GetInt16(2), hwid, reader.GetString(3), reader.GetInt64(0), reader.GetString(1));
+                    else
+                        return null;
             }
         }
 

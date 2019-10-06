@@ -49,9 +49,7 @@ namespace renade
                 throw new PlayerPasswordTooShortException(passwordLength);
 
             if (!IsPlayerSocialClubNameTaken(socialClubName))
-            {
                 if (!IsPlayerLoginTaken(login))
-                {
                     if (!IsPlayerMailTaken(email))
                     {
                         string hashedPassword = BC.HashPassword(password);
@@ -60,17 +58,13 @@ namespace renade
                             connection.Open();
                             using (MySqlCommand command = new MySqlCommand(string.Format(InsertPlayerSql,
                                 login, socialClubName, email, hashedPassword, (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds), connection))
-                            {
                                 return command.ExecuteNonQuery() > 0;
-                            }
                         }
                     }
                     else
                         throw new PlayerMailIsTakenException(email);
-                }
                 else
                     throw new PlayerLoginIsTakenException(login);
-            }
             else
                 throw new PlayerSocialClubNameIsTakenException(socialClubName);
         }
@@ -86,41 +80,31 @@ namespace renade
 
             // Set ip what was latest to second
             if (ip1 != null)
-            {
                 using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
                     using (MySqlCommand command = new MySqlCommand(string.Format(UpdatePlayerIpHistory2BySocialClubNameSql, ip1, socialClubName), connection))
-                    {
                         if (command.ExecuteNonQuery() <= 0)
                             return false;
-                    }
                 }
-            }
 
             // Set ip what was second to third
             if (ip2 != null)
-            {
                 using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
                     using (MySqlCommand command = new MySqlCommand(string.Format(UpdatePlayerIpHistory3BySocialClubNameSql, ip2, socialClubName), connection))
-                    {
                         if (command.ExecuteNonQuery() <= 0)
                             return false;
-                    }
                 }
-            }
 
             // Set latest ip
             using (MySqlConnection connection = new MySqlConnection(ConnectionString))
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(UpdatePlayerIpHistory1BySocialClubNameSql, recentIp, socialClubName), connection))
-                {
                     if (command.ExecuteNonQuery() <= 0)
                         return false;
-                }
             }
 
             // Set latest ip change date
@@ -131,10 +115,8 @@ namespace renade
                 {
                     connection.Open();
                     using (MySqlCommand command = new MySqlCommand(string.Format(UpdatePlayerLatestIpChangeBySocialClubNameSql, currentMillis, socialClubName), connection))
-                    {
                         if (command.ExecuteNonQuery() <= 0)
                             return false;
-                    }
                 }
             }
 
@@ -147,9 +129,7 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(DeletePlayerBySocialClubNameSql, socialClubName), connection))
-                {
                     return command.ExecuteNonQuery() > 0;
-                }
             }
         }
 
@@ -159,17 +139,12 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerByLoginSql, login), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            return true;
-                        else
-                            return false;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
+                        return true;
+                    else
+                        return false;
             }
-
         }
 
         public bool IsPlayerMailTaken(string mail)
@@ -178,15 +153,11 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerByMailSql, mail), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            return true;
-                        else
-                            return false;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
+                        return true;
+                    else
+                        return false;
             }
         }
 
@@ -196,15 +167,11 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerBySocialClubNameSql, socialClubName), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            return true;
-                        else
-                            return false;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
+                        return true;
+                    else
+                        return false;
             }
         }
 
@@ -214,15 +181,11 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerByLoginSql, login), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            return new Player(login, reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3));
-                        else
-                            return null;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
+                        return new Player(login, reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt64(3));
+                    else
+                        return null;
             }
         }
 
@@ -232,15 +195,11 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerBySocialClubNameSql, socialClubName), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            return new Player(reader.GetString(0), socialClubName, reader.GetString(1), reader.GetString(2), reader.GetInt64(3));
-                        else
-                            return null;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
+                        return new Player(reader.GetString(0), socialClubName, reader.GetString(1), reader.GetString(2), reader.GetInt64(3));
+                    else
+                        return null;
             }
         }
 
@@ -250,15 +209,11 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerByMailSql, mail), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                            return new Player(reader.GetString(0), reader.GetString(1), mail, reader.GetString(2), reader.GetInt64(3));
-                        else
-                            return null;
-                    }
-                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
+                        return new Player(reader.GetString(0), reader.GetString(1), mail, reader.GetString(2), reader.GetInt64(3));
+                    else
+                        return null;
             }
         }
 
@@ -268,30 +223,26 @@ namespace renade
             {
                 connection.Open();
                 using (MySqlCommand command = new MySqlCommand(string.Format(SelectPlayerIpHistoryBySocialClubNameSql, socialClubName), connection))
-                {
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                using (MySqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
                     {
-                        if (reader.Read())
-                        {
-                            List<string> ipHistory = new List<string>();
-                            if (reader.IsDBNull(0))
-                                ipHistory.Add(null);
-                            else
-                                ipHistory.Add(reader.GetString(0));
-                            if (reader.IsDBNull(1))
-                                ipHistory.Add(null);
-                            else
-                                ipHistory.Add(reader.GetString(1));
-                            if (reader.IsDBNull(2))
-                                ipHistory.Add(null);
-                            else
-                                ipHistory.Add(reader.GetString(2));
-                            return ipHistory;
-                        }
+                        List<string> ipHistory = new List<string>();
+                        if (reader.IsDBNull(0))
+                            ipHistory.Add(null);
                         else
-                            return new List<string>();
+                            ipHistory.Add(reader.GetString(0));
+                        if (reader.IsDBNull(1))
+                            ipHistory.Add(null);
+                        else
+                            ipHistory.Add(reader.GetString(1));
+                        if (reader.IsDBNull(2))
+                            ipHistory.Add(null);
+                        else
+                            ipHistory.Add(reader.GetString(2));
+                        return ipHistory;
                     }
-                }
+                    else
+                        return new List<string>();
             }
         }
 

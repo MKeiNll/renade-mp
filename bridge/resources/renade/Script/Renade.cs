@@ -37,62 +37,54 @@ namespace renade
         {
             NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(NLogConfigLocation);
             Log = NLog.LogManager.GetCurrentClassLogger();
-            Log.Info("TESTING START");
+
+            Log.Info(LogMainSeparator);
+            Log.Info("Setting up RenadeMP...");
+
+            Log.Info("Processing config...");
             Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(RenadeConfigLocation, System.Text.Encoding.UTF8));
+            Log.Info("Config processed.");
+
+            Log.Info("Setting up services...");
             string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
-            new PlayerRepo(formattedConnectionString).TestRepo();
-            Log.Info("TESTING END");
+            Log.Info("Setting up player repo...");
+            PlayerRepo = new PlayerRepo(formattedConnectionString);
+            Log.Info("Player repo set up.");
+            Log.Info("Setting up ban service...");
+            BanService = new BanService(formattedConnectionString);
+            Log.Info("Ban service set up.");
+            Log.Info("Setting up character service...");
+            CharacterService = new CharacterService(formattedConnectionString);
+            Log.Info("Character service set up.");
+            Log.Info("Services set up.");
 
-            // NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration(NLogConfigLocation);
-            // Log = NLog.LogManager.GetCurrentClassLogger();
+            Log.Info("Setting up global timer...");
+            GlobalTimer = new Timer((e) =>
+            {
+                try
+                {
+                    Log.Info(LogTimerSeparator);
+                    Log.Info("Global timer triggered. (Current time: {0})", DateTimeOffset.Now);
 
-            // Log.Info(LogMainSeparator);
-            // Log.Info("Setting up RenadeMP...");
+                    NAPI.Task.Run(() =>
+                    {
+                        NAPI.World.SetTime(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                        Log.Info("Server time set.");
+                    });
+                    BanService.RemoveTemporaryBans();
 
-            // Log.Info("Processing config...");
-            // Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(RenadeConfigLocation, System.Text.Encoding.UTF8));
-            // Log.Info("Config processed.");
+                    Log.Info("Global timer executed.");
+                    Log.Info(LogTimerSeparator);
+                }
+                catch (Exception exc)
+                {
+                    Log.Error(exc);
+                }
+            }, null, TimeSpan.Zero, TimeSpan.FromMinutes(GlobalTimerInteval));
+            Log.Info("Global timer set up.");
 
-            // Log.Info("Setting up services...");
-            // string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
-            // Log.Info("Setting up player repo...");
-            // PlayerRepo = new PlayerRepo(formattedConnectionString);
-            // Log.Info("Player repo set up.");
-            // Log.Info("Setting up ban service...");
-            // BanService = new BanService(formattedConnectionString);
-            // Log.Info("Ban service set up.");
-            // Log.Info("Setting up character service...");
-            // CharacterService = new CharacterService(formattedConnectionString);
-            // Log.Info("Character service set up.");
-            // Log.Info("Services set up.");
-
-            // Log.Info("Setting up global timer...");
-            // GlobalTimer = new Timer((e) =>
-            // {
-            //     try
-            //     {
-            //         Log.Info(LogTimerSeparator);
-            //         Log.Info("Global timer triggered. (Current time: {0})", DateTimeOffset.Now);
-
-            //         NAPI.Task.Run(() =>
-            //         {
-            //             NAPI.World.SetTime(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-            //             Log.Info("Server time set.");
-            //         });
-            //         BanService.RemoveTemporaryBans();
-
-            //         Log.Info("Global timer executed.");
-            //         Log.Info(LogTimerSeparator);
-            //     }
-            //     catch (Exception exc)
-            //     {
-            //         Log.Error(exc);
-            //     }
-            // }, null, TimeSpan.Zero, TimeSpan.FromMinutes(GlobalTimerInteval));
-            // Log.Info("Global timer set up.");
-
-            // Log.Info("RenadeMP set up.");
-            // Log.Info(LogMainSeparator);
+            Log.Info("RenadeMP set up.");
+            Log.Info(LogMainSeparator);
         }
 
         private void LogConnection(string socialClubName)
