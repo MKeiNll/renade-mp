@@ -10,10 +10,10 @@ namespace renade
 {
     public class Renade : Script
     {
-        public const string RenadeConfigLocation = "renade.json";
-        public const string NLogConfigLocation = "NLog.config";
-        public const string LogMainSeparator = "==================================================================";
-        public const string LogTimerSeparator = "------------------------------------------------------------------";
+        private const string RenadeConfigLocation = "renade.json";
+        private const string NLogConfigLocation = "NLog.config";
+        private const string LogMainSeparator = "==================================================================";
+        private const string LogTimerSeparator = "------------------------------------------------------------------";
 
         private const string ConnectionString = "Server=localhost; database=renade; UID={0}; password={1}";
         private const int UnauthorizedDimension = 100;
@@ -29,10 +29,8 @@ namespace renade
         private static Timer GlobalTimer;
         private static readonly NLog.Logger Log;
 
-        public static readonly PlayerRepo PlayerRepo;
-        public static readonly CharacterPrimaryDataRepo CharacterPrimaryDataRepo;
-        public static readonly BanRepo BanRepo;
-        public static readonly Principal Principal;
+        public static readonly BanService BanService;
+        public static readonly CharacterService CharacterService;
 
         static Renade()
         {
@@ -45,15 +43,17 @@ namespace renade
             Log.Info("Processing config...");
             Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(RenadeConfigLocation, System.Text.Encoding.UTF8));
             Log.Info("Config processed.");
-            Log.Info("Setting up database...");
+
+            Log.Info("Setting up services...");
             string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
-            PlayerRepo = new PlayerRepo(formattedConnectionString);
-            CharacterPrimaryDataRepo = new CharacterPrimaryDataRepo(formattedConnectionString);
-            BanRepo = new BanRepo(formattedConnectionString);
-            Log.Info("Database set up.");
-            Log.Info("Setting up principal...");
-            Principal = new Principal();
-            Log.Info("Principal set up.");
+            Log.Info("Setting up ban service...");
+            BanService = new BanService(formattedConnectionString);
+            Log.Info("Ban service set up.");
+            Log.Info("Setting up character service...");
+            CharacterService = new CharacterService(formattedConnectionString);
+            Log.Info("Character service set up.");
+            Log.Info("Services set up.");
+
             Log.Info("Setting up global timer...");
             GlobalTimer = new Timer((e) =>
             {
@@ -67,7 +67,7 @@ namespace renade
                         NAPI.World.SetTime(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
                         Log.Info("Server time set.");
                     });
-                    Principal.RemoveTemporaryBans();
+                    BanService.RemoveTemporaryBans();
                     
                     Log.Info("Global timer executed.");
                     Log.Info(LogTimerSeparator);
@@ -117,17 +117,13 @@ namespace renade
 
                 // TODO - handle max online limit
                 if (OnlinePlayers.Any(p => p.SocialClubName == socialClubName))
-                {
-                    Principal.KickPlayer(player, "Already in the game.");
-                }
+                    BanService.KickPlayer(player, "Already in the game.");
                 else
                 {
-                    if (Principal.IsPlayerBanned(player))
-                        Principal.KickPlayer(player, "Ban.");
+                    if (BanService.IsPlayerBanned(player))
+                        BanService.KickPlayer(player, "Ban.");
                     else
-                    {
                         player.TriggerEvent("authBrowser", OnlinePlayers.Count, MaxOnline);
-                    }
                 }
             }
             catch (Exception e)

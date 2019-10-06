@@ -12,6 +12,7 @@ namespace renade
         public const int RegularPassOffset = 1001;
 
         public readonly int Id;
+        public readonly int DisplayId;
         public readonly PassType PassType;
 
         public Pass(int id, PassType passType)
@@ -19,18 +20,19 @@ namespace renade
             switch (passType)
             {
                 case PassType.Developer:
-                    Id = id + DeveloperPassOffset;
+                    DisplayId = id + DeveloperPassOffset;
                     break;
                 case PassType.Admin:
-                    Id = id + AdminPassOffset;
+                    DisplayId = id + AdminPassOffset;
                     break;
                 case PassType.Media:
-                    Id = id + MediaPassOffset;
+                    DisplayId = id + MediaPassOffset;
                     break;
                 case PassType.Regular:
-                    Id = id + RegularPassOffset;
+                    DisplayId = id + RegularPassOffset;
                     break;
             }
+            Id = id;
             PassType = passType;
         }
 
