@@ -14,7 +14,7 @@ namespace renade
         private const string SelectAppearanceByCharacterIdSql = "SELECT gender, mother, father, similarity, skin_color, nose_width, " +
             "nose_height, nose_length, nose_bridge, nose_tip, nose_bridge_shift, brow_height, brow_width, cheekbone_height, cheekbone_width, cheeks_width, " +
             "eyes, lips, jaw_width, jaw_height, chin_length, chin_position, chin_width, chin_shape, neck_width, hair, eyebrows, beard, eye_color, hair_color " +
-            "FROM character_appearance WHERE character_id = {0});";
+            "FROM character_appearance WHERE character_id = {0};";
         private const string DeleteAppearanceByCharacterIdSql = "DELETE FROM character_appearance WHERE character_id = {0};";
 
         private static readonly NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
@@ -25,8 +25,8 @@ namespace renade
             ConnectionString = connectionString;
         }
 
-        public bool CreateAppearance(int characterId, Gender gender, Mother mother, Father father, float similarity, float skinColor, float noseHeight, float noseWidth, float noseLength,
-            float noseBridge, float noseTip, float noseBridgeTip, float browWidth, float browHeight, float cheekboneWidth, float cheekboneHeight,
+        public bool CreateAppearance(int characterId, Gender gender, Mother mother, Father father, float similarity, float skinColor, float noseHeight, float noseWidth,
+            float noseLength, float noseBridge, float noseTip, float noseBridgeTip, float browWidth, float browHeight, float cheekboneWidth, float cheekboneHeight,
             float cheeksWidth, float eyes, float lips, float jawWidth, float jawHeight, float chinLength, float chinPosition, float chinWidth, float chinShape,
             float neckWidth, Hair hair, Eyebrows eyebrows, Beard beard, EyeColor eyeColor, HairColor hairColor)
         {
@@ -35,9 +35,10 @@ namespace renade
             using (MySqlConnection connection = new MySqlConnection(ConnectionString))
             {
                 connection.Open();
-                using (MySqlCommand command = new MySqlCommand(string.Format(InsertAppearanceSql, characterId, gender, mother, father, similarity, skinColor, noseHeight,
-                    noseWidth, noseLength, noseBridge, noseTip, noseBridgeTip, browWidth, browHeight, cheekboneWidth, cheekboneHeight, cheeksWidth, eyes, lips, jawWidth,
-                    jawHeight, chinLength, chinPosition, chinWidth, chinShape, neckWidth, hair, eyebrows, beard, eyeColor, hairColor), connection))
+                using (MySqlCommand command = new MySqlCommand(string.Format(InsertAppearanceSql, characterId, (int)gender, (int)mother, (int)father, similarity,
+                    skinColor, noseHeight, noseWidth, noseLength, noseBridge, noseTip, noseBridgeTip, browWidth, browHeight, cheekboneWidth, cheekboneHeight, cheeksWidth,
+                    eyes, lips, jawWidth, jawHeight, chinLength, chinPosition, chinWidth, chinShape, neckWidth, (int)hair, (int)eyebrows, (int)beard, (int)eyeColor,
+                    (int)hairColor), connection))
                 {
                     return command.ExecuteNonQuery() > 0;
                 }

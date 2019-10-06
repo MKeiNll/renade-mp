@@ -11,7 +11,7 @@ namespace renade
 
         private const string InsertPassSql = "INSERT INTO character_pass (character_id, pass_type, id) VALUES ({0}, {1}, {2});";
         private const string SelectPassByCharacterIdSql = "SELECT id, pass_type FROM character_pass WHERE character_id = {0};";
-        private const string SelectMaxPassValueByTypeSql = "SELECT MAX(id) FROM character_pass WHERE pass_type = {0};";
+        private const string SelectMaxPassValueByTypeSql = "SELECT COALESCE(MAX(id), -1) FROM character_pass WHERE pass_type = {0};";
         private const string DeletePassByCharacterIdSql = "DELETE FROM character_pass WHERE character_id = {0};";
 
         private static readonly NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
@@ -33,7 +33,7 @@ namespace renade
             using (MySqlConnection connection = new MySqlConnection(ConnectionString))
             {
                 connection.Open();
-                using (MySqlCommand command = new MySqlCommand(string.Format(InsertPassSql, characterId, passType, id), connection))
+                using (MySqlCommand command = new MySqlCommand(string.Format(InsertPassSql, characterId, (int)passType, id), connection))
                 {
                     return command.ExecuteNonQuery() > 0;
                 }
@@ -63,7 +63,7 @@ namespace renade
             using (MySqlConnection connection = new MySqlConnection(ConnectionString))
             {
                 connection.Open();
-                using (MySqlCommand command = new MySqlCommand(string.Format(SelectMaxPassValueByTypeSql, passType), connection))
+                using (MySqlCommand command = new MySqlCommand(string.Format(SelectMaxPassValueByTypeSql, (int)passType), connection))
                 {
                     using (MySqlDataReader reader = command.ExecuteReader())
                     {
