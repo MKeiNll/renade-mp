@@ -12,6 +12,7 @@
     <script src="js/jquery-3.4.1.js"></script>
     <script src="js/rangeslider.min.js"></script>
     <script src="js/vue.js"></script>
+    <script src="js/character.js"></script>
 </head>
 
 <body>
@@ -192,12 +193,12 @@
             <div class="element">
                 <label>Волосы:</label>
                 <list id="hairM" v-if="gender"></list>
-                <list id="hairF" v-if="!gender"></list>
+                <list id="hairM" v-if="!gender"></list>
             </div>
             <div class="element">
                 <label>Брови:</label>
                 <list id="eyebrowsM" v-if="gender"></list>
-                <list id="eyebrowsF" v-if="!gender"></list>
+                <list id="eyebrowsM" v-if="!gender"></list>
             </div>
             <div class="element" v-if="gender">
                 <label>Бородка:</label>
@@ -212,11 +213,11 @@
                 <list id="eyeColor"></list>
             </div>
         </div>
-        <a href="auth.html">
-            <div @click="save" class="button">Сохранить</div>
+        <a href="#">
+            <div onclick="createCharacter()" class="button">Сохранить</div>
         </a>
     </div>
-    <script src="js/character.js"></script>
+    <script src="js/characterVue.js"></script>
 </body>
 
 </html>

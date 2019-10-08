@@ -1,10 +1,10 @@
 using System;
-using System.Threading;
-using System.Linq;
-using System.IO;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using GTANetworkAPI;
+using Newtonsoft.Json;
 
 namespace renade
 {
@@ -233,17 +233,51 @@ namespace renade
         }
 
         [RemoteEvent("CreateCharacter")]
-        public void CreateCharacter(Client player, Gender gender, Mother mother, Father father)
+        public void CreateCharacter(Client player, String firstName, String familyName, int gender, string motherString, string fatherString, 
+            float similarity, float skinColor, float noseHeight, float noseWidth, float noseLength, float noseBridge, float noseTip,
+            float noseBridgeTip, float browWidth, float browHeight, float cheekboneWidth, float cheekboneHeight, float cheeksWidth,
+            float eyes, float lips, float jawWidth, float jawHeight, float chinLength, float chinPosition, float chinWidth,
+            float chinShape, float neckWidth, string hairString, string eyebrowsString, string beardString, string eyeColorString, string hairColorString)
         {
             try
-            {
-                // TODO - add all parameters & print them
-                // CharacterService.CreateCharacter(socialClubName, "Steve", "Jobsa", PassType.Regular, Gender.Male, 1, 1, 1, 1, 1, "asd");
+            {   
+                Log.Info(motherString + fatherString); 
+
+                Log.Info(similarity);
+                Log.Info(skinColor);
+                Log.Info(noseHeight);
+                Log.Info(noseWidth);
+                Log.Info(noseLength);
+
+                // Understand mothers & fathers
+                // input slider ranges?
+                // all values constraints? 
+
+
+                // Log.Info(hairString); // Next step
+
+                // TODO - format code width
+
+                Enum.TryParse(motherString, out Mother mother);
+                Enum.TryParse(fatherString, out Father father);
+                Enum.TryParse(hairString, out Hair hair);
+                Enum.TryParse(eyebrowsString, out Eyebrows eyebrows);
+                Enum.TryParse(beardString, out Beard beard);
+                Enum.TryParse(eyeColorString, out EyeColor eyeColor);
+                Enum.TryParse(hairColorString, out HairColor hairColor);
+                long characterCount = CharacterService.GetTotalCharacterCount();
+                CharacterService.CreateCharacter(player.SocialClubName, firstName, familyName + (characterCount + 1), (Gender)gender, 
+                    mother, father, similarity, skinColor, noseHeight, noseWidth, noseLength, noseBridge, noseTip, 
+                    noseBridgeTip, browWidth, browHeight, cheekboneWidth, cheekboneHeight, cheeksWidth, eyes, lips, jawWidth, 
+                    jawHeight, chinLength, chinPosition, chinWidth, chinShape, neckWidth, hair, eyebrows, 
+                    beard, eyeColor, hairColor);
+                Log.Info("Character no. {0} successfully created", characterCount + 1);
                 // catch (CharacterFirstNameTooLongException) { } // TODO
                 // catch (CharacterFamilyNameTooLongException) { } // TODO
             }
             catch (Exception e)
             {
+
                 Log.Error(e);
                 // TODO - do something client-side
             }

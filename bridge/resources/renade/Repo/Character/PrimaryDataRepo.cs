@@ -16,6 +16,7 @@ namespace renade
         private const string InsertCharacterPrimaryDataSql = "INSERT INTO player_character_primary_data (player_social_club_name, first_name, family_name, " +
             "reg_date, phone_number, bank_id) VALUES ('{0}', '{1}', '{2}', {3}, {4}, {5});";
         private const string DeleteCharacterPrimaryDataByIdSql = "DELETE FROM player_character_primary_data WHERE character_id = '{0}';";
+        private const string CountCharacterPrimaryDataSql = "SELECT COUNT(*) FROM player_character_primary_data;";
 
         private static readonly NLog.Logger Log = NLog.LogManager.GetCurrentClassLogger();
         private readonly string ConnectionString;
@@ -99,6 +100,16 @@ namespace renade
             return result;
         }
 
+        public long CountCharacterPrimaryData()
+        {
+            using (MySqlConnection connection = new MySqlConnection(ConnectionString))
+            {
+                connection.Open();
+                using (MySqlCommand command = new MySqlCommand(CountCharacterPrimaryDataSql, connection))
+                    return (long)command.ExecuteScalar();
+            }
+        }
+
         public void TestRepo()
         {
             Log.Info("Testing CharacterPrimaryDataRepo...");
@@ -106,7 +117,9 @@ namespace renade
             Log.Info("Create: " + CreateNewCharacterPrimaryData("1234", "1234", "1234"));
             Log.Info("Get:");
             GetCharacterPrimaryDataByPlayerSocialClubName("1234").ForEach((e) => Log.Info(e));
+            Log.Info("Count: " + CountCharacterPrimaryData());
             Log.Info("Delete: " + DeleteCharacterPrimaryDataById(3));
+            Log.Info("Count: " + CountCharacterPrimaryData());
             Log.Info("Done.");
         }
     }

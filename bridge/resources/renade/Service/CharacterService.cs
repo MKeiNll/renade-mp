@@ -56,6 +56,11 @@ namespace renade
             return characters;
         }
 
+        public long GetTotalCharacterCount()
+        {
+            return CharacterPrimaryDataRepo.CountCharacterPrimaryData();
+        }
+
         public void SaveCharacter()
         {
             // TODO 
