@@ -175,9 +175,9 @@ namespace renade
                     character.PrimaryData.FirstName, character.PrimaryData.FamilyName, character.PrimaryData.Level);
                 Log.Info("Player {0} successfully logged in.", socialClubName);
             }
-            catch (PlayerDoesNotExistException) { } // TODO
-            catch (PlayerPasswordInvalidException) { } // TODO
-            catch (PlayerSocialClubNameInvalidException) { } // TODO
+            // catch (PlayerDoesNotExistException) { } // TODO
+            // catch (PlayerPasswordInvalidException) { } // TODO
+            // catch (PlayerSocialClubNameInvalidException) { } // TODO
             catch (Exception e)
             {
                 Log.Error(e);
@@ -198,18 +198,18 @@ namespace renade
                     character.PrimaryData.FamilyName, character.PrimaryData.Level);
                 Log.Info("Player {0} successfully registered.", socialClubName);
             }
-            catch (PlayerLoginTooLongException) { } // TODO
-            catch (PlayerSocialClubNameTooLongException) { } // TODO
-            catch (PlayerMailTooLongException) { } // TODO
-            catch (PlayerPasswordTooLongException) { } // TODO
-            catch (PlayerPasswordTooShortException) { } // TODO
-            catch (PlayerSocialClubNameIsTakenException) { } // TODO
-            catch (PlayerLoginIsTakenException) { } // TODO
-            catch (PlayerMailIsTakenException) { } // TODO
-            catch (PlayerPasswordsDoNotMatchException) { } // TODO
-            catch (PlayerCouldNotBeCreatedException) { } // TODO
-            catch (CharacterFirstNameTooLongException) { } // TODO
-            catch (CharacterFamilyNameTooLongException) { } // TODO
+            // catch (PlayerLoginTooLongException) { } // TODO
+            // catch (PlayerSocialClubNameTooLongException) { } // TODO
+            // catch (PlayerMailTooLongException) { } // TODO
+            // catch (PlayerPasswordTooLongException) { } // TODO
+            // catch (PlayerPasswordTooShortException) { } // TODO
+            // catch (PlayerSocialClubNameIsTakenException) { } // TODO
+            // catch (PlayerLoginIsTakenException) { } // TODO
+            // catch (PlayerMailIsTakenException) { } // TODO
+            // catch (PlayerPasswordsDoNotMatchException) { } // TODO
+            // catch (PlayerCouldNotBeCreatedException) { } // TODO
+            // catch (CharacterFirstNameTooLongException) { } // TODO
+            // catch (CharacterFamilyNameTooLongException) { } // TODO
             catch (Exception e)
             {
                 Log.Error(e);
@@ -226,22 +226,9 @@ namespace renade
         {
             try
             {
-                Log.Info(motherString + fatherString);
-
-                Log.Info(similarity);
-                Log.Info(skinColor);
-                Log.Info(noseHeight);
-                Log.Info(noseWidth);
-                Log.Info(noseLength);
-
                 // Understand mothers & fathers
                 // input slider ranges?
                 // all values constraints? 
-
-
-                // Log.Info(hairString); // Next step
-
-                // TODO - format code width
 
                 Enum.TryParse(motherString, out Mother mother);
                 Enum.TryParse(fatherString, out Father father);
@@ -257,9 +244,12 @@ namespace renade
                     jawHeight, chinLength, chinPosition, chinWidth, chinShape, neckWidth, hair, eyebrows,
                     beard, eyeColor, hairColor);
                 Log.Info("Character no. {0} successfully created", characterCount + 1);
-                // catch (CharacterFirstNameTooLongException) { } // TODO
-                // catch (CharacterFamilyNameTooLongException) { } // TODO
             }
+            // catch (CharacterFirstNameTooLongException) { } // TODO
+            // catch (CharacterFamilyNameTooLongException) { } // TODO
+            // catch (FailedToCreateCharacterPrimaryDataException) { } // TODO
+            // catch (FailedToCreateCharacterPassException) { } // TODO
+            // catch (FailedToCreateCharacterAppearanceException) { } // TODO
             catch (Exception e)
             {
 
