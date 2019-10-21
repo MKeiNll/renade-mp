@@ -29,7 +29,7 @@ namespace renade
         private static Timer GlobalTimer;
         private static readonly NLog.Logger Log;
 
-        public static readonly PlayerRepo PlayerRepo;
+        public static readonly PlayerService PlayerService;
         public static readonly BanService BanService;
         public static readonly CharacterService CharacterService;
 
@@ -47,9 +47,9 @@ namespace renade
 
             Log.Info("Setting up services...");
             string formattedConnectionString = string.Format(ConnectionString, config.DatabaseUser, config.DatabasePassword);
-            Log.Info("Setting up player repo...");
-            PlayerRepo = new PlayerRepo(formattedConnectionString);
-            Log.Info("Player repo set up.");
+            Log.Info("Setting up player service...");
+            PlayerService = new PlayerService(formattedConnectionString);
+            Log.Info("Player service set up.");
             Log.Info("Setting up ban service...");
             BanService = new BanService(formattedConnectionString);
             Log.Info("Ban service set up.");
@@ -168,21 +168,16 @@ namespace renade
             {
                 string socialClubName = player.SocialClubName;
 
-                Player playerAccount = PlayerRepo.GetPlayerByLogin(loginOrMail);
-                if (playerAccount == null)
-                    playerAccount = PlayerRepo.GetPlayerByMail(loginOrMail);
+                Player playerAccount = PlayerService.GetPlayer(socialClubName, loginOrMail, password);
+                Character character = CharacterService.GetPlayerCharactersBySocialClubName(playerAccount.SocialClubName)[0];
 
-                if (playerAccount != null && PlayerRepo.IsPlayerPasswordValid(playerAccount, password) && playerAccount.SocialClubName == socialClubName)
-                {
-                    Character character = CharacterService.GetPlayerCharactersBySocialClubName(playerAccount.SocialClubName)[0];
-
-                    player.TriggerEvent("loginOrRegisterPlayerSuccess", playerAccount.Login,
-                        character.PrimaryData.FirstName, character.PrimaryData.FamilyName, character.PrimaryData.Level);
-                    Log.Info("Player {0} successfully logged in.", socialClubName);
-                }
-                else
-                    player.TriggerEvent("loginPlayerFailure");
+                player.TriggerEvent("loginOrRegisterPlayerSuccess", playerAccount.Login,
+                    character.PrimaryData.FirstName, character.PrimaryData.FamilyName, character.PrimaryData.Level);
+                Log.Info("Player {0} successfully logged in.", socialClubName);
             }
+            catch (PlayerDoesNotExistException) { } // TODO
+            catch (PlayerPasswordInvalidException) { } // TODO
+            catch (PlayerSocialClubNameInvalidException) { } // TODO
             catch (Exception e)
             {
                 Log.Error(e);
@@ -197,34 +192,24 @@ namespace renade
             {
                 string socialClubName = player.SocialClubName;
 
-                if (password1 == password2)
-                {
-                    try
-                    {
-                        if (!PlayerRepo.CreateNewPlayer(login, socialClubName, mail, password1))
-                            throw new FailedToCreatePlayerException(login, socialClubName, mail);
-                    }
-                    catch (PlayerLoginTooLongException) { } // TODO
-                    catch (PlayerSocialClubNameTooLongException) { } // TODO
-                    catch (PlayerMailTooLongException) { } // TODO
-                    catch (PlayerPasswordTooLongException) { } // TODO
-                    catch (PlayerPasswordTooShortException) { } // TODO
-                    catch (PlayerSocialClubNameIsTakenException) { } // TODO
-                    catch (PlayerLoginIsTakenException) { } // TODO
-                    catch (PlayerMailIsTakenException) { } // TODO
-                    catch (CharacterFirstNameTooLongException) { } // TODO
-                    catch (CharacterFamilyNameTooLongException) { } // TODO
-
-                    Character character = CharacterService.GetPlayerCharactersBySocialClubName(socialClubName)[0];
-                    player.TriggerEvent("loginOrRegisterPlayerSuccess", login, character.PrimaryData.FirstName,
-                        character.PrimaryData.FamilyName, character.PrimaryData.Level);
-                    Log.Info("Player {0} successfully registered.", socialClubName);
-                }
-                else
-                {
-                    // TODO
-                }
+                PlayerService.CreatePlayer(socialClubName, login, mail, password1, password2);
+                Character character = CharacterService.GetPlayerCharactersBySocialClubName(socialClubName)[0];
+                player.TriggerEvent("loginOrRegisterPlayerSuccess", login, character.PrimaryData.FirstName,
+                    character.PrimaryData.FamilyName, character.PrimaryData.Level);
+                Log.Info("Player {0} successfully registered.", socialClubName);
             }
+            catch (PlayerLoginTooLongException) { } // TODO
+            catch (PlayerSocialClubNameTooLongException) { } // TODO
+            catch (PlayerMailTooLongException) { } // TODO
+            catch (PlayerPasswordTooLongException) { } // TODO
+            catch (PlayerPasswordTooShortException) { } // TODO
+            catch (PlayerSocialClubNameIsTakenException) { } // TODO
+            catch (PlayerLoginIsTakenException) { } // TODO
+            catch (PlayerMailIsTakenException) { } // TODO
+            catch (PlayerPasswordsDoNotMatchException) { } // TODO
+            catch (PlayerCouldNotBeCreatedException) { } // TODO
+            catch (CharacterFirstNameTooLongException) { } // TODO
+            catch (CharacterFamilyNameTooLongException) { } // TODO
             catch (Exception e)
             {
                 Log.Error(e);
@@ -233,15 +218,15 @@ namespace renade
         }
 
         [RemoteEvent("CreateCharacter")]
-        public void CreateCharacter(Client player, String firstName, String familyName, int gender, string motherString, string fatherString, 
+        public void CreateCharacter(Client player, String firstName, String familyName, int gender, string motherString, string fatherString,
             float similarity, float skinColor, float noseHeight, float noseWidth, float noseLength, float noseBridge, float noseTip,
             float noseBridgeTip, float browWidth, float browHeight, float cheekboneWidth, float cheekboneHeight, float cheeksWidth,
             float eyes, float lips, float jawWidth, float jawHeight, float chinLength, float chinPosition, float chinWidth,
             float chinShape, float neckWidth, string hairString, string eyebrowsString, string beardString, string eyeColorString, string hairColorString)
         {
             try
-            {   
-                Log.Info(motherString + fatherString); 
+            {
+                Log.Info(motherString + fatherString);
 
                 Log.Info(similarity);
                 Log.Info(skinColor);
@@ -266,10 +251,10 @@ namespace renade
                 Enum.TryParse(eyeColorString, out EyeColor eyeColor);
                 Enum.TryParse(hairColorString, out HairColor hairColor);
                 long characterCount = CharacterService.GetTotalCharacterCount();
-                CharacterService.CreateCharacter(player.SocialClubName, firstName, familyName + (characterCount + 1), (Gender)gender, 
-                    mother, father, similarity, skinColor, noseHeight, noseWidth, noseLength, noseBridge, noseTip, 
-                    noseBridgeTip, browWidth, browHeight, cheekboneWidth, cheekboneHeight, cheeksWidth, eyes, lips, jawWidth, 
-                    jawHeight, chinLength, chinPosition, chinWidth, chinShape, neckWidth, hair, eyebrows, 
+                CharacterService.CreateCharacter(player.SocialClubName, firstName, familyName + (characterCount + 1), (Gender)gender,
+                    mother, father, similarity, skinColor, noseHeight, noseWidth, noseLength, noseBridge, noseTip,
+                    noseBridgeTip, browWidth, browHeight, cheekboneWidth, cheekboneHeight, cheeksWidth, eyes, lips, jawWidth,
+                    jawHeight, chinLength, chinPosition, chinWidth, chinShape, neckWidth, hair, eyebrows,
                     beard, eyeColor, hairColor);
                 Log.Info("Character no. {0} successfully created", characterCount + 1);
                 // catch (CharacterFirstNameTooLongException) { } // TODO
@@ -291,11 +276,9 @@ namespace renade
                 string socialClubName = player.SocialClubName;
 
                 UnauthorizedPlayers.Remove(socialClubName);
-                OnlinePlayers.Add(PlayerRepo.GetPlayerBySocialClubName(socialClubName));
+                OnlinePlayers.Add(PlayerService.GetPlayer(socialClubName));
 
-                string playerIp = player.Address;
-                if (!PlayerRepo.UpdatePlayerIpHistoryBySocialClubName(socialClubName, playerIp))
-                    throw new FailedToUpdatePlayerIpHistoryException(playerIp);
+                PlayerService.UpdatePlayerIpHistory(socialClubName, player.Address);
 
                 player.Dimension = MainDimension;
                 player.TriggerEvent("spawnPlayerSuccess");
