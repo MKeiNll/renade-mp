@@ -3,6 +3,9 @@ using System;
 namespace renade
 {
     public enum Gender { Male, Female };
+
+    // TODO - gay parents // not use enums?
+
     public enum Mother
     {
         Hannah = 21, Audrey = 22, Jasmine = 23, Giselle = 34, Amelia = 25,
