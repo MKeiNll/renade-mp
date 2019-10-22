@@ -6,6 +6,7 @@ let maxOnline;
 mp.events.add("authBrowser", (currentOnl, maxOnl) => {
   mp.gui.cursor.show(true, true);
   mp.gui.chat.activate(false);
+  mp.game.ui.displayRadar(false);
   loginBrowser = mp.browsers.new("package://renade/web/auth.html");
 
   currentOnline = currentOnl;
@@ -27,7 +28,6 @@ mp.events.add(
     updateSavedCredentials(loginOrEmailInput, passwordInput, saveCredentials);
     mp.events.callRemote("LoginPlayer", loginOrEmailInput, passwordInput);
     setOnline(currentOnline, maxOnline);
-    mp.game.invoke("0xAAB3200ED59016BC", mp.players.local.handle, 1, 1);
   }
 );
 
@@ -49,7 +49,6 @@ mp.events.add("registerPlayer", (player, login, mail, password1, password2) => {
 
 mp.events.add("spawnPlayer", () => {
   mp.events.callRemote("SpawnPlayer");
-  mp.game.invoke("0xD8295AF639FD9CB8", mp.players.local.handle, 1, 1);
 });
 
 mp.events.add("spawnPlayerSuccess", () => {
@@ -209,10 +208,27 @@ let debug = message => {
   loginBrowser.execute(`debug("${message}")`);
 };
 
-// TODO - refactor or remove
-mp.events.add("aTaser", (targetName, type) => {
-  mp.game.graphics.notify(
-    `~g~[DEBUG] <C>${targetName.name}</C> started up aTaser event!`
-  );
-  targetName.setToRagdoll(5000, 5000, type, false, false, false);
+mp.events.add("toggleCreator", () => {
+mp.players.local.freezePosition(true);
+
+let sceneryCamera = mp.cameras.new(
+  "default",
+  new mp.Vector3(
+    mp.players.local.position.x + 0.25,
+    mp.players.local.position.y + 1,
+    mp.players.local.position.z + 0.5
+  ),
+  new mp.Vector3(0, 0, 165),
+  40
+);
+
+sceneryCamera.pointAtCoord(
+  new mp.Vector3(
+    mp.players.local.position.x,
+    mp.players.local.position.y,
+    mp.players.local.position.z
+  )
+);
+sceneryCamera.setActive(true);
+mp.game.cam.renderScriptCams(true, false, 0, true, false);
 });

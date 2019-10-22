@@ -3,8 +3,20 @@ using System;
 namespace renade
 {
     public enum Gender { Male, Female };
-    public enum Mother { Hannah, Aubrey };
-    public enum Father { Benjamin, Daniel };
+    public enum Mother
+    {
+        Hannah = 21, Audrey = 22, Jasmine = 23, Giselle = 34, Amelia = 25,
+        Isabella = 26, Zoe = 27, Ava = 28, Camilla = 29, Violet = 30, Sophia = 31,
+        Eveline = 32, Nicole = 33, Ashley = 34, Grace = 35, Brianna = 36, Natalie = 37,
+        Olivia = 38, Elizabeth = 39, Charlotte = 40, Emma = 41, Misty = 45
+    };
+    public enum Father
+    {
+        Benjamin = 0, Daniel = 1, Joshua = 2, Noah = 3, Andrew = 4, Joan = 5,
+        Alex = 6, Isaac = 7, Evan = 8, Ethan = 9, Vincent = 10, Angel = 11, Diego = 12,
+        Adrian = 13, Gabriel = 14, Michael = 15, Santiago = 16, Kevin = 17, Louis = 18,
+        Samuel = 19, Anthony = 20, John = 42, Niko = 43, Claude = 44
+    };
     public enum Hair { None, Buzzcut };
     public enum Eyebrows { None, Balanced };
     public enum Beard { None, LightStubble };

@@ -1,3 +1,7 @@
+$(document).ready(() => {
+  mp.trigger("toggleCreator");
+});
+
 createCharacter = () => {
   // TODO - name & familyName input
   mp.trigger(

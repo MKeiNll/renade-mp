@@ -3,10 +3,9 @@
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
-    background: #012C40;
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .editor {
