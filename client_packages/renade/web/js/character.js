@@ -1,5 +1,9 @@
 $(document).ready(() => {
   mp.trigger("toggleCreator");
+
+  $("input[type=range]").on("input", function() {
+    mp.trigger("changeAppearance", $(this).attr("name"), $(this).val());
+  });
 });
 
 createCharacter = () => {

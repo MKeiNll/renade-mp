@@ -209,26 +209,30 @@ let debug = message => {
 };
 
 mp.events.add("toggleCreator", () => {
-mp.players.local.freezePosition(true);
+  mp.players.local.freezePosition(true);
 
-let sceneryCamera = mp.cameras.new(
-  "default",
-  new mp.Vector3(
-    mp.players.local.position.x + 0.25,
-    mp.players.local.position.y + 1,
-    mp.players.local.position.z + 0.5
-  ),
-  new mp.Vector3(0, 0, 165),
-  40
-);
+  let sceneryCamera = mp.cameras.new(
+    "default",
+    new mp.Vector3(
+      mp.players.local.position.x + 0.25,
+      mp.players.local.position.y + 1,
+      mp.players.local.position.z + 0.5
+    ),
+    new mp.Vector3(0, 0, 165),
+    40
+  );
 
-sceneryCamera.pointAtCoord(
-  new mp.Vector3(
-    mp.players.local.position.x,
-    mp.players.local.position.y,
-    mp.players.local.position.z
-  )
-);
-sceneryCamera.setActive(true);
-mp.game.cam.renderScriptCams(true, false, 0, true, false);
+  sceneryCamera.pointAtCoord(
+    new mp.Vector3(
+      mp.players.local.position.x,
+      mp.players.local.position.y,
+      mp.players.local.position.z
+    )
+  );
+  sceneryCamera.setActive(true);
+  mp.game.cam.renderScriptCams(true, false, 0, true, false);
+});
+
+mp.events.add("changeAppearance", (index, value) => {
+  mp.players.local.setFaceFeature(parseInt(index), parseInt(value));
 });
