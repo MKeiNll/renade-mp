@@ -211,6 +211,10 @@ let debug = message => {
 mp.events.add("toggleCreator", () => {
   mp.players.local.freezePosition(true);
 
+  // Clear character appearance if previously set
+  for (let i = 0; i < 20; i++)
+    mp.players.local.setFaceFeature(i, 0);
+
   let sceneryCamera = mp.cameras.new(
     "default",
     new mp.Vector3(
