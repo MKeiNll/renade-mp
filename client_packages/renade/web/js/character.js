@@ -2,7 +2,15 @@ $(document).ready(() => {
   mp.trigger("toggleCreator");
 
   $("input[type=range]").on("input", function() {
-    mp.trigger("changeAppearance", $(this).attr("name"), $(this).val());
+    mp.trigger("changeFaceFeature", $(this).attr("name"), $(this).val());
+  });
+
+  $("#gendermale").click(function() {
+    mp.trigger("setMale", true);
+  });
+
+  $("#genderfemale").click(function() {
+    mp.trigger("setMale", false);
   });
 });
 

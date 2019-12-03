@@ -212,8 +212,7 @@ mp.events.add("toggleCreator", () => {
   mp.players.local.freezePosition(true);
 
   // Clear character appearance if previously set
-  for (let i = 0; i < 20; i++)
-    mp.players.local.setFaceFeature(i, 0);
+  for (let i = 0; i < 20; i++) mp.players.local.setFaceFeature(i, 0);
 
   let sceneryCamera = mp.cameras.new(
     "default",
@@ -237,6 +236,12 @@ mp.events.add("toggleCreator", () => {
   mp.game.cam.renderScriptCams(true, false, 0, true, false);
 });
 
-mp.events.add("changeAppearance", (index, value) => {
-  mp.players.local.setFaceFeature(parseInt(index), parseInt(value));
+mp.events.add("changeFaceFeature", (index, value) => {
+  mp.players.local.setFaceFeature(parseFloat(index), parseFloat(value));
+});
+
+mp.events.add("setMale", male => {
+  let model = "mp_m_freemode_01";
+  if (!male) model = "mp_f_freemode_01";
+  mp.players.local.model = mp.game.joaat(model);
 });

@@ -4,8 +4,8 @@
   eyebrowsM: ["None", "Balanced"],
   eyebrowsF: ["None", "Balanced"],
   beard: ["None", "Light Stubble"],
-  hairM: ["None", "Buzzcut"],
-  hairF: ["None", "Buzzcut"],
+  hairM: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+  hairF: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
   hairColor: ["Red", "Blue"],
   eyeColor: ["Green", "Emerald"]
 };
