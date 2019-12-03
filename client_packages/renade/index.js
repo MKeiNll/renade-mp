@@ -213,6 +213,7 @@ mp.events.add("toggleCreator", () => {
 
   // Clear character appearance if previously set
   for (let i = 0; i < 20; i++) mp.players.local.setFaceFeature(i, 0);
+  mp.players.local.model = mp.game.joaat("mp_m_freemode_01");
 
   let sceneryCamera = mp.cameras.new(
     "default",
@@ -244,4 +245,9 @@ mp.events.add("setMale", male => {
   let model = "mp_m_freemode_01";
   if (!male) model = "mp_f_freemode_01";
   mp.players.local.model = mp.game.joaat(model);
+});
+
+mp.events.add("setHair", hair => {
+  // TODO - what are 3rd & 4th arguments?
+  mp.players.local.setComponentVariation(2, parseInt(hair), 0, 0);
 });

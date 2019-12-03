@@ -52,11 +52,13 @@ Vue.component("list", {
       this.index--;
       if (this.index < 0) this.index = 0;
       this.send();
+      mp.trigger("setHair", this.values[this.index]);
     },
     right: function(event) {
       this.index++;
       if (this.index == this.values.length) this.index = 0;
       this.send();
+      mp.trigger("setHair", this.values[this.index]);
     },
     send: function() {
       var value = this.num ? this.values[this.index] : this.index;
